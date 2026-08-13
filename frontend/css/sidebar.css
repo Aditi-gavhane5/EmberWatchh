@@ -1,0 +1,596 @@
+/* =========================================================
+   EMBERWATCH - SIDEBAR
+   =========================================================
+
+   This file controls ONLY the left navigation sidebar.
+
+   The HTML structure for the sidebar is already inside
+   index.html.
+
+   Here we decide:
+   - sidebar width
+   - background
+   - logo appearance
+   - navigation spacing
+   - icons
+   - active navigation state
+   - data source box
+   - system status
+*/
+
+
+/* =========================================================
+   1. SIDEBAR CONTAINER
+   ========================================================= */
+
+.sidebar {
+
+    /*
+        The sidebar stays fixed on the left side of the
+        screen while the user scrolls through the dashboard.
+    */
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    /*
+        Width comes from variables.css.
+
+        This means we can change the sidebar width from
+        ONE place later.
+    */
+    width: var(--sidebar-width);
+
+    /*
+        Sidebar takes the full height of the browser.
+    */
+    height: 100vh;
+
+    /*
+        Dark background from our design system.
+    */
+    background-color: var(--bg-sidebar);
+
+    /*
+        A subtle right border separates the navigation
+        from the main application.
+    */
+    border-right: 1px solid var(--border-color);
+
+    /*
+        Keep the sidebar above the rest of the application.
+    */
+    z-index: 1000;
+
+    /*
+        We use flexbox so the navigation can occupy the
+        available space while the data-source section stays
+        near the bottom.
+    */
+    display: flex;
+    flex-direction: column;
+
+    /*
+        Prevent sidebar content from overflowing outside
+        the screen.
+    */
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /*
+        Small transition for light/dark mode.
+    */
+    transition:
+        background-color var(--transition-normal),
+        border-color var(--transition-normal);
+}
+
+
+/* =========================================================
+   2. BRAND / LOGO
+   ========================================================= */
+
+.brand {
+
+    /*
+        Horizontal layout:
+
+        🔥  EMBERWATCH
+            GLOBAL DISASTER MONITOR
+    */
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    /*
+        Space around the logo.
+    */
+    padding: 24px 20px 26px;
+
+    /*
+        Prevent the brand from shrinking.
+    */
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   3. FIRE LOGO ICON
+   ========================================================= */
+
+.brand-icon {
+
+    /*
+        The fire emoji acts as our temporary logo.
+
+        Later, if we want, we can replace this with a
+        custom SVG/logo without changing the rest of
+        the layout.
+    */
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 27px;
+
+    /*
+        Orange glow makes the fire feel connected to our
+        EMBERWATCH visual identity.
+    */
+
+    filter:
+        drop-shadow(
+            0 0 8px rgba(255, 90, 10, 0.35)
+        );
+}
+
+
+/* =========================================================
+   4. BRAND TEXT
+   ========================================================= */
+
+.brand-text {
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+
+    min-width: 0;
+}
+
+
+/* Main EMBERWATCH name */
+
+.brand-text h1 {
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    /*
+        Slight letter spacing gives the logo a more
+        professional monitoring-product appearance.
+    */
+
+    letter-spacing: 0.02em;
+
+    color: var(--text-primary);
+}
+
+
+/* Small subtitle */
+
+.brand-text span {
+
+    font-size: 8px;
+
+    font-weight: 500;
+
+    letter-spacing: 0.08em;
+
+    color: var(--text-muted);
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   5. SIDEBAR NAVIGATION
+   ========================================================= */
+
+.sidebar-nav {
+
+    /*
+        The navigation occupies the remaining available
+        sidebar space.
+    */
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    /*
+        Space between navigation items.
+    */
+
+    gap: 4px;
+
+    /*
+        Horizontal spacing from the sidebar edges.
+    */
+
+    padding: 4px 10px 20px;
+}
+
+
+/* =========================================================
+   6. NAVIGATION ITEM
+   ========================================================= */
+
+.nav-item {
+
+    /*
+        Every navigation item is a horizontal row.
+
+        Example:
+
+        🔥  Wildfires
+    */
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    min-height: 44px;
+
+    padding: 0 13px;
+
+    /*
+        Small controlled rounding.
+
+        We intentionally DON'T use huge rounded cards
+        because we want the UI to feel more human-designed.
+    */
+
+    border-radius: var(--radius-small);
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    /*
+        Smooth hover transition.
+    */
+
+    transition:
+        background-color var(--transition-fast),
+        color var(--transition-fast);
+}
+
+
+/* =========================================================
+   7. NAVIGATION ICON
+   ========================================================= */
+
+.nav-icon {
+
+    /*
+        Icons all get the same width.
+
+        This keeps the text perfectly aligned even when
+        different emojis have different natural widths.
+    */
+
+    width: 22px;
+
+    min-width: 22px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 17px;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   8. NAVIGATION HOVER
+   ========================================================= */
+
+.nav-item:hover {
+
+    /*
+        Very subtle background.
+
+        We don't want the sidebar to become a collection
+        of bright cards.
+    */
+
+    background-color: var(--bg-card);
+
+    color: var(--text-primary);
+}
+
+
+/* =========================================================
+   9. ACTIVE NAVIGATION ITEM
+   =========================================================
+
+   The active item is the page the user is currently on.
+
+   In our reference:
+
+   Dashboard has a dark highlighted background
+   with an orange accent line.
+*/
+
+.nav-item.active {
+
+    background-color: var(--bg-card);
+
+    color: var(--orange);
+
+    font-weight: 600;
+}
+
+
+/*
+    Orange line on the left side of the active item.
+*/
+
+.nav-item.active::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 8px;
+    bottom: 8px;
+
+    width: 2px;
+
+    background-color: var(--orange);
+
+    border-radius: 0 3px 3px 0;
+}
+
+
+/* =========================================================
+   10. ACTIVE ICON
+   ========================================================= */
+
+.nav-item.active .nav-icon {
+
+    /*
+        Slight orange emphasis for the active icon.
+    */
+
+    filter:
+        drop-shadow(
+            0 0 5px rgba(255, 90, 10, 0.25)
+        );
+}
+
+
+/* =========================================================
+   11. NAVIGATION DIVIDER
+   ========================================================= */
+
+.nav-divider {
+
+    /*
+        Separates disaster categories from utility
+        navigation such as Alerts and Settings.
+    */
+
+    height: 1px;
+
+    background-color: var(--border-color);
+
+    margin: 10px 12px;
+}
+
+
+/* =========================================================
+   12. SIDEBAR BOTTOM AREA
+   ========================================================= */
+
+.sidebar-bottom {
+
+    /*
+        Keeps these sections at the bottom of the sidebar.
+    */
+
+    flex-shrink: 0;
+
+    padding: 0 10px 18px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+/* =========================================================
+   13. DATA SOURCE BOX
+   ========================================================= */
+
+.data-source {
+
+    /*
+        Small information card showing where the data comes
+        from.
+    */
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+
+    padding: 15px;
+
+    background-color: var(--bg-card);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-medium);
+}
+
+
+/* DATA SOURCE title */
+
+.data-source .small-label {
+
+    margin-bottom: 2px;
+}
+
+
+/* NASA EONET */
+
+.data-source strong {
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: var(--orange);
+}
+
+
+/* Description */
+
+.data-source > span:last-child {
+
+    font-size: 10px;
+
+    color: var(--text-muted);
+}
+
+
+/* =========================================================
+   14. SYSTEM STATUS
+   ========================================================= */
+
+.system-status {
+
+    /*
+        Small row showing that our system is functioning.
+    */
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 11px 13px;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-medium);
+
+    background-color: var(--bg-secondary);
+
+    color: var(--text-secondary);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   15. STATUS DOT
+   =========================================================
+
+   We already use this class in the navbar and sidebar.
+
+   The same visual language is reused throughout the
+   application.
+*/
+
+.status-dot {
+
+    width: 7px;
+    height: 7px;
+
+    min-width: 7px;
+
+    border-radius: 50%;
+
+    background-color: var(--success);
+
+    /*
+        Very subtle glow around the status indicator.
+    */
+
+    box-shadow:
+        0 0 7px rgba(34, 197, 94, 0.35);
+}
+
+
+/* =========================================================
+   16. LIGHT MODE
+   =========================================================
+
+   Most of the sidebar automatically changes because
+   our colors come from CSS variables.
+
+   We only need a few small adjustments here.
+*/
+
+body.light-mode .sidebar {
+
+    box-shadow:
+        4px 0 18px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================================================
+   17. SIDEBAR SCROLLBAR
+   =========================================================
+
+   If the navigation becomes taller than the screen,
+   the sidebar can scroll independently.
+*/
+
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+.sidebar::-webkit-scrollbar-thumb {
+
+    background-color: var(--border-light);
+
+    border-radius: 10px;
+}
+
+
+/* =========================================================
+   END OF SIDEBAR STYLES
+   ========================================================= */

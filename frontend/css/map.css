@@ -1,0 +1,1042 @@
+/* =========================================================
+   EMBERWATCH - MAP STYLES
+   =========================================================
+
+   This file controls the visual appearance of the map
+   section.
+
+   IMPORTANT:
+
+   CSS does NOT create the actual interactive map.
+
+   Later:
+
+       map.js
+          ↓
+       Google Maps
+          ↓
+       Actual map appears inside #map
+
+   This file controls everything around and on top of it:
+
+   - Map container
+   - Map header
+   - Map mode buttons
+   - Zoom controls
+   - Legend
+   - Loading state
+   - Wildfire marker styling
+*/
+
+
+/* =========================================================
+   1. MAP CONTAINER
+   ========================================================= */
+
+.map-container {
+
+    /*
+        The map should occupy all available width.
+    */
+
+    width: 100%;
+
+    /*
+        Prevent the map from overflowing its grid column.
+    */
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   2. MAP HEADER
+   =========================================================
+
+   The header sits above the actual map.
+
+   Example:
+
+   Global Event Map                    [Map] [Satellite]
+   Active natural disaster events
+*/
+
+.map-container .section-header {
+
+    /*
+        Give the header a little breathing room.
+    */
+
+    padding: 0 2px;
+}
+
+
+/* =========================================================
+   3. MAP MODE BUTTONS
+   =========================================================
+
+   These buttons will eventually allow the user to switch
+   between:
+
+       Map
+       Satellite
+
+   For now they're just visual buttons.
+
+   Later JavaScript will make them functional.
+*/
+
+.map-mode-buttons {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 3px;
+
+    padding: 3px;
+
+    background-color: var(--bg-card);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-small);
+}
+
+
+/* Individual map mode button */
+
+.map-mode {
+
+    padding: 6px 10px;
+
+    border-radius: 4px;
+
+    color: var(--text-muted);
+
+    font-size: 9px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background-color var(--transition-fast),
+        color var(--transition-fast);
+}
+
+
+/* Hover */
+
+.map-mode:hover {
+
+    color: var(--text-primary);
+
+    background-color: var(--bg-card-hover);
+}
+
+
+/* Active map mode */
+
+.map-mode.active {
+
+    background-color: var(--orange);
+
+    color: #ffffff;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   4. ACTUAL MAP AREA
+   =========================================================
+
+   This is the important #map element from index.html.
+
+   Later Google Maps will be loaded inside this element.
+*/
+
+.map {
+
+    /*
+        The map needs a fixed minimum height so that
+        there is actually an area for Google Maps to occupy.
+    */
+
+    position: relative;
+
+    width: 100%;
+
+    height: 500px;
+
+    min-height: 400px;
+
+    /*
+        Dark background acts as a fallback while the map
+        is loading.
+    */
+
+    background-color: #111416;
+
+    /*
+        Border around the map.
+    */
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-medium);
+
+    /*
+        Anything outside the rounded map edges is hidden.
+
+        This is especially useful for map controls and
+        overlays.
+    */
+
+    overflow: hidden;
+
+    /*
+        The map should appear as one large visual element.
+    */
+
+    box-shadow: var(--shadow-medium);
+}
+
+
+/* =========================================================
+   5. MAP PLACEHOLDER
+   =========================================================
+
+   This is visible BEFORE Google Maps is connected.
+
+   Once map.js successfully creates the map, this element
+   can be hidden.
+*/
+
+.map-placeholder {
+
+    /*
+        Cover the map area.
+    */
+
+    position: absolute;
+
+    inset: 0;
+
+    /*
+        Center the placeholder content.
+    */
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    /*
+        Keep placeholder above the background but below
+        map controls.
+    */
+
+    z-index: 1;
+
+    /*
+        Temporary dark background.
+    */
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(255, 90, 10, 0.05),
+            transparent 45%
+        ),
+        #111416;
+
+    color: var(--text-muted);
+
+    /*
+        IMPORTANT:
+
+        When Google Maps is connected, map.js can add
+        a class that hides this.
+    */
+
+    pointer-events: none;
+}
+
+
+/* Globe icon */
+
+.map-placeholder > span {
+
+    font-size: 42px;
+
+    opacity: 0.55;
+
+    filter:
+        grayscale(0.4);
+}
+
+
+/* Placeholder text */
+
+.map-placeholder p {
+
+    font-size: 11px;
+
+    color: var(--text-muted);
+}
+
+
+/* =========================================================
+   6. MAP CONTROLS
+   =========================================================
+
+   These are our custom + and - buttons.
+
+   Later map.js will connect these buttons to the actual
+   Google Maps zoom functionality.
+
+   The user specifically wanted:
+
+       ➕
+
+       ➖
+
+   and the ability to zoom/pan around the map.
+*/
+
+.map-controls {
+
+    position: absolute;
+
+    top: 16px;
+
+    right: 16px;
+
+    z-index: 10;
+
+    display: flex;
+
+    flex-direction: column;
+
+    /*
+        No gap because we want the controls to feel like
+        one compact control group.
+    */
+
+    overflow: hidden;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-small);
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+
+/* Individual zoom button */
+
+.map-controls button {
+
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background-color: rgba(13, 16, 19, 0.95);
+
+    color: var(--text-primary);
+
+    font-size: 20px;
+
+    font-weight: 400;
+
+    cursor: pointer;
+
+    transition:
+        background-color var(--transition-fast),
+        color var(--transition-fast);
+}
+
+
+/* Divider between + and - */
+
+.map-controls button + button {
+
+    border-top: 1px solid var(--border-color);
+}
+
+
+/* Hover */
+
+.map-controls button:hover {
+
+    background-color: var(--orange);
+
+    color: #ffffff;
+}
+
+
+/* Pressed state */
+
+.map-controls button:active {
+
+    transform: scale(0.96);
+}
+
+
+/* =========================================================
+   7. MAP LEGEND
+   =========================================================
+
+   The legend explains wildfire severity.
+
+   Example:
+
+   ● Low
+   ● Moderate
+   ● High
+*/
+
+.map-legend {
+
+    position: absolute;
+
+    left: 16px;
+
+    bottom: 16px;
+
+    z-index: 10;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 9px 11px;
+
+    background-color: rgba(13, 16, 19, 0.94);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-small);
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.22);
+
+    /*
+        Make sure the legend doesn't become too wide.
+    */
+
+    max-width: calc(100% - 32px);
+
+    color: var(--text-secondary);
+
+    font-size: 9px;
+}
+
+
+/* Individual legend item */
+
+.map-legend > div {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   8. LEGEND DOT
+   ========================================================= */
+
+.legend-dot {
+
+    width: 7px;
+
+    height: 7px;
+
+    min-width: 7px;
+
+    border-radius: 50%;
+}
+
+
+/* Low */
+
+.legend-dot.low {
+
+    background-color: var(--severity-low);
+
+    box-shadow:
+        0 0 6px rgba(34, 197, 94, 0.3);
+}
+
+
+/* Moderate */
+
+.legend-dot.medium {
+
+    background-color: var(--severity-medium);
+
+    box-shadow:
+        0 0 6px rgba(245, 158, 11, 0.3);
+}
+
+
+/* High */
+
+.legend-dot.high {
+
+    background-color: var(--severity-high);
+
+    box-shadow:
+        0 0 7px rgba(239, 68, 68, 0.35);
+}
+
+
+/* =========================================================
+   9. WILDFIRE MARKER
+   =========================================================
+
+   These are custom markers that we can use if we decide
+   to create our own HTML markers.
+
+   Google Maps can also use its own marker system.
+
+   Keeping these styles here makes it easy to customize
+   them later.
+*/
+
+.fire-marker {
+
+    width: 30px;
+
+    height: 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    /*
+        Orange/red circular background.
+    */
+
+    background-color: rgba(255, 75, 31, 0.14);
+
+    border: 1px solid rgba(255, 90, 10, 0.45);
+
+    border-radius: 50%;
+
+    /*
+        Small glow around active wildfire locations.
+    */
+
+    box-shadow:
+        0 0 12px rgba(255, 75, 31, 0.28);
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+
+/* Marker hover */
+
+.fire-marker:hover {
+
+    transform: scale(1.15);
+
+    box-shadow:
+        0 0 18px rgba(255, 75, 31, 0.45);
+}
+
+
+/* =========================================================
+   10. FIRE MARKER SEVERITY
+   ========================================================= */
+
+
+/* Low severity */
+
+.fire-marker.low {
+
+    background-color:
+        rgba(34, 197, 94, 0.12);
+
+    border-color:
+        rgba(34, 197, 94, 0.4);
+
+    box-shadow:
+        0 0 10px rgba(34, 197, 94, 0.2);
+}
+
+
+/* Moderate severity */
+
+.fire-marker.medium {
+
+    background-color:
+        rgba(245, 158, 11, 0.14);
+
+    border-color:
+        rgba(245, 158, 11, 0.45);
+
+    box-shadow:
+        0 0 12px rgba(245, 158, 11, 0.25);
+}
+
+
+/* High severity */
+
+.fire-marker.high {
+
+    background-color:
+        rgba(239, 68, 68, 0.16);
+
+    border-color:
+        rgba(239, 68, 68, 0.5);
+
+    box-shadow:
+        0 0 16px rgba(239, 68, 68, 0.35);
+}
+
+
+/* =========================================================
+   11. MAP INFO WINDOW
+   =========================================================
+
+   Later, when a user clicks a wildfire marker, we can
+   display a small information popup.
+
+   This class gives us a consistent design for that popup
+   if we use custom HTML.
+*/
+
+.map-info-window {
+
+    min-width: 210px;
+
+    max-width: 280px;
+
+    padding: 14px;
+
+    background-color: var(--bg-card);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-medium);
+
+    box-shadow: var(--shadow-medium);
+
+    color: var(--text-primary);
+}
+
+
+/* Event title inside popup */
+
+.map-info-window h4 {
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    margin-bottom: 5px;
+}
+
+
+/* Event location */
+
+.map-info-window p {
+
+    font-size: 10px;
+
+    color: var(--text-secondary);
+}
+
+
+/* =========================================================
+   12. MAP LOADING STATE
+   =========================================================
+
+   JavaScript can add this class while Google Maps or API
+   data is loading.
+*/
+
+.map.loading::after {
+
+    content: "Loading map...";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 20;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background-color: rgba(5, 6, 7, 0.75);
+
+    color: var(--text-secondary);
+
+    font-size: 11px;
+
+    backdrop-filter: blur(2px);
+}
+
+
+/* =========================================================
+   13. LIGHT MODE
+   ========================================================= */
+
+body.light-mode .map {
+
+    /*
+        Slightly lighter map fallback.
+
+        Actual Google Maps colors will be controlled by
+        the map style configuration in map.js.
+    */
+
+    background-color: #e8e8e4;
+
+    box-shadow: var(--shadow-small);
+}
+
+
+/*
+    Map overlays remain slightly darker in light mode so
+    that they remain visible against the map.
+*/
+
+body.light-mode .map-controls button {
+
+    background-color: rgba(255, 255, 255, 0.96);
+
+    color: var(--text-primary);
+}
+
+
+body.light-mode .map-legend {
+
+    background-color: rgba(255, 255, 255, 0.96);
+
+    box-shadow: var(--shadow-small);
+}
+
+
+/* =========================================================
+   14. RESPONSIVE MAP
+   ========================================================= */
+
+
+/* Tablet */
+
+@media (max-width: 900px) {
+
+    .map {
+
+        /*
+            Slightly shorter map on tablet screens.
+        */
+
+        height: 450px;
+
+        min-height: 350px;
+    }
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .map {
+
+        height: 400px;
+
+        min-height: 320px;
+    }
+
+
+    /*
+        Move zoom controls slightly closer to the edge.
+    */
+
+    .map-controls {
+
+        top: 12px;
+
+        right: 12px;
+    }
+
+
+    /*
+        Make the buttons slightly smaller.
+    */
+
+    .map-controls button {
+
+        width: 34px;
+
+        height: 34px;
+
+        font-size: 18px;
+    }
+
+
+    /*
+        The legend can become too wide on mobile, so allow
+        it to wrap.
+    */
+
+    .map-legend {
+
+        left: 12px;
+
+        bottom: 12px;
+
+        gap: 8px;
+
+        flex-wrap: wrap;
+
+        padding: 8px 9px;
+
+        font-size: 8px;
+    }
+}
+
+
+/* Very small screens */
+
+@media (max-width: 400px) {
+
+    .map {
+
+        height: 350px;
+
+        min-height: 300px;
+    }
+
+
+    /*
+        Keep only the essential spacing on tiny screens.
+    */
+
+    .map-legend {
+
+        max-width: calc(100% - 24px);
+
+    }
+}
+
+/* =========================================================
+   EMBERWATCH - MAP LOADING STATE
+   ========================================================= */
+
+#map-loading {
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    z-index: 1000;
+
+    pointer-events: none;
+
+}
+
+
+.map-loading-content {
+
+    min-width: 190px;
+
+    padding: 18px 24px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    border-radius: 14px;
+
+    background:
+        rgba(10, 12, 15, 0.94);
+
+    border:
+        1px solid
+        rgba(255, 107, 0, 0.25);
+
+    box-shadow:
+        0 12px 40px
+        rgba(0, 0, 0, 0.35);
+
+    backdrop-filter:
+        blur(10px);
+
+}
+
+
+.map-loading-icon {
+
+    font-size: 30px;
+
+    line-height: 1;
+
+    animation:
+        emberwatchLoadingSpin
+        1.5s
+        linear
+        infinite;
+
+}
+
+
+.map-loading-title {
+
+    color:
+        #ffffff;
+
+    font-size:
+        13px;
+
+    font-weight:
+        600;
+
+}
+
+
+.map-loading-subtitle {
+
+    color:
+        #ff6b00;
+
+    font-size:
+        11px;
+
+}
+
+
+@keyframes emberwatchLoadingSpin {
+
+    from {
+
+        transform:
+            rotate(0deg);
+
+    }
+
+    to {
+
+        transform:
+            rotate(360deg);
+
+    }
+
+}
+
+
+/* =========================================================
+   MAP ERROR STATE
+   ========================================================= */
+
+#map-error {
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    z-index: 1000;
+
+}
+
+
+.map-error-content {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 14px 18px;
+
+    border-radius: 12px;
+
+    background:
+        rgba(10, 12, 15, 0.95);
+
+    border:
+        1px solid
+        rgba(255, 80, 80, 0.3);
+
+    color:
+        #ffffff;
+
+    font-size:
+        13px;
+
+    box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, 0.35);
+
+}
+
+
+.map-error-icon {
+
+    font-size:
+        20px;
+
+}
+
+
+.map-error-message {
+
+    color:
+        #f0f0f0;
+
+}
+/* =========================================================
+   END OF MAP STYLES
+   ========================================================= */

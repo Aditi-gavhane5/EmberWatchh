@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- =====================================================
+         1. BASIC HTML DOCUMENT SETUP
+         =====================================================
+
+         Every HTML page starts with a basic document structure.
+
+         <!DOCTYPE html>
+             Tells the browser that we are using modern HTML5.
+
+         lang="en"
+             Tells the browser that the main language of the
+             page is English.
+    -->
+
+
+    <!--
+        UTF-8 allows the website to correctly display normal
+        text, special characters and emojis such as:
+
+        🔥 🌊 🌋 🌎 ⚠️
+    -->
+    <meta charset="UTF-8">
+
+
+    <!--
+        This makes the website responsive.
+
+        Without this, a mobile browser may try to display the
+        desktop version of the website and everything can look
+        extremely small.
+
+        width=device-width
+            Use the actual width of the device.
+
+        initial-scale=1.0
+            Start the page at normal zoom.
+    -->
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+
+    <!--
+        This is the text that appears in the browser tab.
+    -->
+    <title>
+        EMBERWATCH | Global Disaster Monitor
+    </title>
+
+
+    <!-- =====================================================
+         2. CSS FILES
+         =====================================================
+
+         Instead of putting ALL our CSS into one giant file,
+         we divided the styling into multiple files.
+
+         This makes the project easier to understand and
+         maintain.
+
+         For example:
+
+         sidebar.css
+             → controls only the sidebar
+
+         map.css
+             → controls only the map
+
+         tables.css
+             → controls only the tables
+
+         responsive.css
+             → controls mobile/tablet behaviour
+    -->
+
+
+    <!--
+        variables.css
+
+        Stores our reusable colors, sizes, shadows,
+        spacing values, etc.
+
+        Example:
+
+            --orange
+            --bg-card
+            --text-primary
+
+        Other CSS files use these variables.
+    -->
+    <link
+        rel="stylesheet"
+        href="css/variables.css"
+    >
+
+
+    <!--
+        global.css
+
+        Contains general styling that applies to the
+        whole website.
+
+        For example:
+
+            body
+            buttons
+            headings
+            general typography
+    -->
+    <link
+        rel="stylesheet"
+        href="css/global.css"
+    >
+
+
+    <!--
+        sidebar.css
+
+        Controls the left navigation sidebar.
+    -->
+    <link
+        rel="stylesheet"
+        href="css/sidebar.css"
+    >
+
+
+    <!--
+        navbar.css
+
+        Controls the top navigation bar.
+    -->
+    <link
+        rel="stylesheet"
+        href="css/navbar.css"
+    >
+
+
+    <!--
+        cards.css
+
+        Controls the statistics cards such as:
+
+            Total Events
+            Affected Regions
+            High Alerts
+            Last Updated
+    -->
+    <link
+        rel="stylesheet"
+        href="css/cards.css"
+    >
+
+
+    <!--
+        dashboard.css
+
+        Controls the main dashboard layout and sections.
+    -->
+    <link
+        rel="stylesheet"
+        href="css/dashboard.css"
+    >
+
+
+    <!--
+        map.css
+
+        Controls the map container, map controls,
+        markers, legend and map-related UI.
+    -->
+    <link
+        rel="stylesheet"
+        href="css/map.css"
+    >
+
+
+    <!--
+        eventpanel.css
+
+        Controls the wildfire information panel shown
+        beside the map.
+    -->
+    <link
+        rel="stylesheet"
+        href="css/eventpanel.css"
+    >
+
+
+    <!--
+        tables.css
+
+        Controls the Recent Activity table.
+    -->
+    <link
+        rel="stylesheet"
+        href="css/tables.css"
+    >
+
+
+    <!--
+        responsive.css
+
+        Controls how our website rearranges itself on:
+
+            Desktop
+            Laptop
+            Tablet
+            Mobile
+    -->
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+    <!-- =====================================================
+     LEAFLET MAP LIBRARY
+     =====================================================
+
+     Leaflet is the JavaScript library we use to create
+     our interactive world map.
+
+     We use Leaflet instead of Google Maps because it is
+     lightweight, beginner-friendly and doesn't require
+     us to manage a Google Maps API key.
+
+     The CSS controls how the map itself looks.
+-->
+
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+>
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         3. SIDEBAR
+         =====================================================
+
+         The sidebar is the main navigation area on the left.
+
+         It contains links to different disaster categories.
+
+         For now, our main working feature is WILDFIRES.
+
+         Later we can make:
+
+             🌊 Floods
+             〽 Earthquakes
+             🌋 Volcanoes
+             🌫️ Dust Storms
+             〰 Sand Storms
+             🌩️ Severe Storms
+
+         functional as well.
+    -->
+
+
+    <aside class="sidebar">
+
+
+        <!-- =================================================
+             3A. EMBERWATCH BRAND
+             =================================================
+
+             This is the logo/brand area at the top of the
+             sidebar.
+        -->
+
+
+        <div class="brand">
+
+
+            <!--
+                Fire emoji acts as our simple logo icon.
+            -->
+            <span class="brand-icon">
+                🔥
+            </span>
+
+
+            <!--
+                brand-text contains the actual name and
+                subtitle of our application.
+            -->
+            <div class="brand-text">
+
+                <h1>
+                    EMBERWATCH
+                </h1>
+
+                <span>
+                    GLOBAL DISASTER MONITOR
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             3B. SIDEBAR NAVIGATION
+             =================================================
+
+             Each <a> below represents one navigation option.
+
+             We also use:
+
+                 data-disaster="..."
+
+             This gives JavaScript information about which
+             disaster category the user selected.
+
+             Example:
+
+                 data-disaster="wildfire"
+
+             can later be read using JavaScript.
+        -->
+
+
+        <nav class="sidebar-nav">
+
+
+            <!-- =================================================
+                 DASHBOARD
+                 ================================================= -->
+
+            <a
+                href="#"
+                class="nav-item active"
+                data-disaster="dashboard"
+            >
+
+                <!-- Small icon displayed beside the text -->
+                <span class="nav-icon">
+                    ⌂
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 WILDFIRES
+                 =================================================
+
+                 This is our FIRST fully functional disaster
+                 category.
+
+                 NASA EONET wildfire data will eventually
+                 appear when this section is selected.
+            -->
+
+            <a
+                href="#"
+                class="nav-item"
+                data-disaster="wildfire"
+            >
+
+                <span class="nav-icon">
+                    🔥
+                </span>
+
+                <span>
+                    Wildfires
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 FLOODS
+                 =================================================
+
+                 Prepared for a future version.
+
+                 The water icon is intentionally blue-looking
+                 through the disaster design.
+            -->
+
+            <a
+                href="#"
+                class="nav-item"
+                data-disaster="flood"
+            >
+
+                <span class="nav-icon">
+                    🌊
+                </span>
+
+                <span>
+                    Floods
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 EARTHQUAKES
+                 ================================================= -->
+
+            <a
+                href="#"
+                class="nav-item"
+                data-disaster="earthquake"
+            >
+
+                <span class="nav-icon">
+                    〽
+                </span>
+
+                <span>
+                    Earthquakes
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 DUST STORMS
+                 ================================================= -->
+
+            <a
+                href="#"
+                class="nav-item"
+                data-disaster="dust-storm"
+            >
+
+                <span class="nav-icon">
+                    🌫️
+                </span>
+
+                <span>
+                    Dust Storms
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 SAND STORMS
+                 ================================================= -->
+
+            <a
+                href="#"
+                class="nav-item"
+                data-disaster="sand-storm"
+            >
+
+                <span class="nav-icon">
+                    〰
+                </span>
+
+                <span>
+                    Sand Storms
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 VOLCANOES
+                 ================================================= -->
+
+            <a
+                href="#"
+                class="nav-item"
+                data-disaster="volcano"
+            >
+
+                <span class="nav-icon">
+                    🌋
+                </span>
+
+                <span>
+                    Volcanoes
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 SEVERE STORMS
+                 ================================================= -->
+
+            <a
+                href="#"
+                class="nav-item"
+                data-disaster="severe-storm"
+            >
+
+                <span class="nav-icon">
+                    🌩️
+                </span>
+
+                <span>
+                    Severe Storms
+                </span>
+
+            </a>
+
+
+            <!--
+                Divider separates the main disaster categories
+                from secondary application features.
+            -->
+            <div class="nav-divider"></div>
+
+
+            <!-- =================================================
+                 ALERTS
+                 ================================================= -->
+
+            <a
+                href="#"
+                class="nav-item"
+                data-disaster="alerts"
+            >
+
+                <span class="nav-icon">
+                    🔔
+                </span>
+
+                <span>
+                    Alerts
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 SAVED LOCATIONS
+                 ================================================= -->
+
+            <a
+                href="#"
+                class="nav-item"
+                data-disaster="saved"
+            >
+
+                <span class="nav-icon">
+                    🔖
+                </span>
+
+                <span>
+                    Saved Locations
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 REPORTS
+                 ================================================= -->
+
+            <a
+                href="#"
+                class="nav-item"
+                data-disaster="reports"
+            >
+
+                <span class="nav-icon">
+                    📄
+                </span>
+
+                <span>
+                    Reports
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 SETTINGS
+                 ================================================= -->
+
+            <a
+                href="#"
+                class="nav-item"
+                data-disaster="settings"
+            >
+
+                <span class="nav-icon">
+                    ⚙️
+                </span>
+
+                <span>
+                    Settings
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 ABOUT US
+                 ================================================= -->
+
+            <a
+                href="#"
+                class="nav-item"
+                data-disaster="about"
+            >
+
+                <span class="nav-icon">
+                    ⓘ
+                </span>
+
+                <span>
+                    About Us
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <!-- =================================================
+             3C. SIDEBAR BOTTOM INFORMATION
+             =================================================
+
+             This area gives the user some information about
+             where the data comes from and whether the system
+             is working.
+        -->
+
+
+        <div class="sidebar-bottom">
+
+
+            <!-- DATA SOURCE -->
+
+            <div class="data-source">
+
+                <span class="small-label">
+                    DATA SOURCE
+                </span>
+
+                <strong>
+                    NASA EONET
+                </strong>
+
+                <span>
+                    Real-time event data
+                </span>
+
+            </div>
+
+
+            <!-- SYSTEM STATUS -->
+
+            <div class="system-status">
+
+                <!--
+                    This small dot visually indicates that
+                    the system is operational.
+                -->
+                <span class="status-dot"></span>
+
+                <span>
+                    All systems operational
+                </span>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         4. MAIN CONTENT
+         =====================================================
+
+         Everything except the sidebar lives inside this
+         <main> element.
+
+         The main area contains:
+
+             Navbar
+             Dashboard
+             Statistics
+             Map
+             Event panel
+             Recent activity
+             Chart
+    -->
+
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             5. TOP NAVBAR
+             =================================================
+
+             The navbar contains:
+
+                 Mobile menu
+                 Search
+                 Last updated information
+                 Theme button
+                 Profile
+        -->
+
+
+        <header class="navbar">
+
+
+            <!-- =================================================
+                 5A. MOBILE MENU
+                 =================================================
+
+                 On desktop this button may be hidden.
+
+                 On mobile, clicking it opens the sidebar.
+
+                 navigation.js handles this functionality.
+            -->
+
+            <div class="navbar-left">
+
+                <button
+                    class="mobile-menu"
+                    aria-label="Open navigation menu"
+                    type="button"
+                >
+
+                    ☰
+
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 5B. SEARCH BAR
+                 =================================================
+
+                 This is currently the visual search field.
+
+                 Later we can connect it to map locations or
+                 disaster searches.
+            -->
+
+            <div class="navbar-search">
+
+                <span class="search-icon">
+                    ⌕
+                </span>
+
+                <input
+                    type="text"
+                    id="globalSearch"
+                    placeholder="Search location..."
+                    aria-label="Search location"
+                >
+
+            </div>
+
+
+            <!-- =================================================
+                 5C. NAVBAR RIGHT SIDE
+                 ================================================= -->
+
+            <div class="navbar-actions">
+
+
+                <!-- LAST UPDATED -->
+
+                <div class="last-updated">
+
+                    <span class="status-dot"></span>
+
+                    <span>
+
+                        Last updated:
+
+                        <!--
+                            dashboard.js can update this
+                            element when fresh API data arrives.
+                        -->
+
+                        <strong id="lastUpdated">
+                            2 min ago
+                        </strong>
+
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     DARK / LIGHT MODE BUTTON
+                     =================================================
+
+                     theme.js controls this button.
+
+                     We use a separate span with the ID
+                     "themeIcon" because JavaScript needs to
+                     change only the icon.
+                -->
+
+                <button
+                    class="theme-toggle"
+                    id="themeToggle"
+                    aria-label="Toggle light and dark mode"
+                    type="button"
+                >
+
+                    <span id="themeIcon">
+                        ☀️
+                    </span>
+
+                </button>
+
+
+                <!-- PROFILE -->
+
+                <div class="profile-circle">
+                    A
+                </div>
+
+
+                <!-- Small arrow beside profile -->
+
+                <span class="profile-arrow">
+                    ⌄
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================================
+             6. DASHBOARD
+             =====================================================
+
+             This is the main content area of EMBERWATCH.
+        -->
+
+
+        <section class="dashboard">
+
+
+            <!-- =================================================
+                 6A. DASHBOARD HEADING
+                 ================================================= -->
+
+            <div class="dashboard-heading">
+
+                <div>
+
+                    <h2>
+                        Global Disaster Monitor
+                    </h2>
+
+                    <p>
+                        Real-time monitoring of natural
+                        disasters around the world.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 6B. STATISTICS CARDS
+                 =================================================
+
+                 These cards show a quick summary of the
+                 disaster data.
+
+                 Initially they contain placeholder values.
+
+                 dashboard.js will eventually replace those
+                 values with actual API data.
+            -->
+
+
+            <section class="statistics-grid">
+
+
+                <!-- =================================================
+                     TOTAL EVENTS CARD
+                     ================================================= -->
+
+                <article class="stat-card">
+
+                    <div class="stat-icon fire">
+                        🌐
+                    </div>
+
+                    <div class="stat-content">
+
+                        <span>
+                            Total Events
+                        </span>
+
+                        <!--
+                            IMPORTANT:
+
+                            dashboard.js searches for
+                            "totalEvents".
+
+                            Therefore the ID must match exactly.
+                        -->
+
+                        <strong id="totalEvents">
+                            247
+                        </strong>
+
+                        <small>
+                            ↑ 12% from yesterday
+                        </small>
+
+                    </div>
+
+                </article>
+
+
+                <!-- =================================================
+                     AFFECTED REGIONS CARD
+                     ================================================= -->
+
+                <article class="stat-card">
+
+                    <div class="stat-icon region">
+                        🌎
+                    </div>
+
+                    <div class="stat-content">
+
+                        <span>
+                            Affected Regions
+                        </span>
+
+                        <!--
+                            dashboard.js updates this number.
+                        -->
+
+                        <strong id="affectedRegions">
+                            31
+                        </strong>
+
+                        <small>
+                            ↑ 5 from yesterday
+                        </small>
+
+                    </div>
+
+                </article>
+
+
+                <!-- =================================================
+                     HIGH ALERTS CARD
+                     ================================================= -->
+
+                <article class="stat-card">
+
+                    <div class="stat-icon alert">
+                        ⚠️
+                    </div>
+
+                    <div class="stat-content">
+
+                        <span>
+                            High Alerts
+                        </span>
+
+                        <!--
+                            dashboard.js updates this value.
+                        -->
+
+                        <strong id="highAlerts">
+                            18
+                        </strong>
+
+                        <small>
+                            ↑ 3 from yesterday
+                        </small>
+
+                    </div>
+
+                </article>
+
+
+                <!-- =================================================
+                     LAST UPDATED CARD
+                     ================================================= -->
+
+                <article class="stat-card">
+
+                    <div class="stat-icon time">
+                        ◷
+                    </div>
+
+                    <div class="stat-content">
+
+                        <span>
+                            Last Updated
+                        </span>
+
+                        <!--
+                            This is separate from the navbar
+                            lastUpdated element.
+
+                            dashboard.js can update this card
+                            independently.
+                        -->
+
+                        <strong id="dashboardLastUpdated">
+                            2 min ago
+                        </strong>
+
+                        <small>
+                            Real-time data
+                        </small>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- =================================================
+                 7. MAIN DASHBOARD GRID
+                 =================================================
+
+                 This area contains two major sections:
+
+                 LEFT:
+                     Interactive map
+
+                 RIGHT:
+                     Selected event information
+            -->
+
+
+            <section class="main-dashboard-grid">
+
+
+                <!-- =================================================
+                     7A. MAP SECTION
+                     ================================================= -->
+
+                <div class="map-container">
+
+
+                    <!-- MAP SECTION HEADER -->
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h3>
+                                Global Event Map
+                            </h3>
+
+                            <p>
+                                Active natural disaster events
+                            </p>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             MAP / SATELLITE SWITCH
+                             =================================================
+
+                             These buttons are currently visual.
+
+                             Later map.js can make them switch
+                             between different map styles.
+                        -->
+
+                        <div class="map-mode-buttons">
+
+                            <button
+                                class="map-mode active"
+                                type="button"
+                            >
+                                Map
+                            </button>
+
+                            <button
+                                class="map-mode"
+                                type="button"
+                            >
+                                Satellite
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         ACTUAL MAP CONTAINER
+                         =================================================
+
+                         This empty area is where the Google Maps
+                         JavaScript API will eventually create
+                         the actual interactive map.
+
+                         map.js searches for:
+
+                             id="map"
+
+                         and places the map inside it.
+                    -->
+
+
+                    <div
+                        id="map"
+                        class="map"
+                    >
+
+
+                        <!-- =================================================
+                             MAP PLACEHOLDER
+                             =================================================
+
+                             Until Google Maps is connected, we
+                             display this temporary message.
+
+                             Once the real map loads, this can
+                             disappear.
+                        -->
+
+                        <div class="map-placeholder">
+
+                            <span>
+                                🌎
+                            </span>
+
+                            <p>
+                                Interactive map loading...
+                            </p>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             CUSTOM ZOOM CONTROLS
+                             =================================================
+
+                             We don't want to depend only on the
+                             default Google Maps controls.
+
+                             These buttons are controlled by
+                             map.js.
+
+                             + → zoom in
+
+                             − → zoom out
+                        -->
+
+                        <div class="map-controls">
+
+                            <button
+                                id="zoomIn"
+                                type="button"
+                                aria-label="Zoom in"
+                            >
+                                +
+                            </button>
+
+                            <button
+                                id="zoomOut"
+                                type="button"
+                                aria-label="Zoom out"
+                            >
+                                −
+                            </button>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             MAP LEGEND
+                             =================================================
+
+                             This explains what the different
+                             colors represent.
+
+                             Low
+                             Moderate
+                             High
+                        -->
+
+                        <div class="map-legend">
+
+
+                            <!-- LOW -->
+
+                            <div>
+
+                                <span
+                                    class="legend-dot low"
+                                ></span>
+
+                                Low
+
+                            </div>
+
+
+                            <!-- MODERATE -->
+
+                            <div>
+
+                                <span
+                                    class="legend-dot medium"
+                                ></span>
+
+                                Moderate
+
+                            </div>
+
+
+                            <!-- HIGH -->
+
+                            <div>
+
+                                <span
+                                    class="legend-dot high"
+                                ></span>
+
+                                High
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     7B. EVENT INFORMATION PANEL
+                     =================================================
+
+                     This panel displays information about the
+                     wildfire selected on the map.
+
+                     When the user clicks a marker:
+
+                         Map marker
+                              ↓
+                         map.js
+                              ↓
+                         updateEventPanel()
+                              ↓
+                         This panel changes
+                -->
+
+
+                <aside class="event-panel">
+
+
+                    <!-- PANEL HEADER -->
+
+                    <div class="event-panel-header">
+
+                        <span class="event-label">
+                            WILDFIRE EVENT
+                        </span>
+
+
+                        <!--
+                            This button is prepared for later
+                            JavaScript functionality.
+
+                            It can eventually hide/close the
+                            selected event panel.
+                        -->
+
+                        <button
+                            class="close-panel"
+                            id="closeEventPanel"
+                            type="button"
+                            aria-label="Close event panel"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         EVENT TITLE
+                         ================================================= -->
+
+                    <div class="event-title">
+
+
+                        <!-- FIRE ICON -->
+
+                        <div class="event-icon">
+                            🔥
+                        </div>
+
+
+                        <!-- EVENT NAME + LOCATION -->
+
+                        <div>
+
+
+                            <!--
+                                dashboard.js expects the ID:
+
+                                    eventTitle
+
+                                When a user selects another
+                                wildfire, JavaScript changes
+                                this text.
+                            -->
+
+                            <h3 id="eventTitle">
+                                Dixie Fire
+                            </h3>
+
+
+                            <!--
+                                dashboard.js changes this when
+                                a different event is selected.
+                            -->
+
+                            <p id="eventLocation">
+                                California, United States
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         EVENT STATUS
+                         =================================================
+
+                         This is currently a visual placeholder.
+
+                         Later, if we get reliable severity data,
+                         JavaScript can determine whether an event
+                         is Low, Moderate or High.
+                    -->
+
+                    <div class="event-status">
+                        High Activity
+                    </div>
+
+
+                    <!-- =================================================
+                         EVENT DETAILS
+                         ================================================= -->
+
+                    <div class="event-details">
+
+
+                        <!-- =================================================
+                             DETECTED DATE
+                             ================================================= -->
+
+                        <div class="detail-item">
+
+                            <span class="detail-icon">
+                                📅
+                            </span>
+
+                            <div>
+
+                                <span>
+                                    DETECTED
+                                </span>
+
+
+                                <!--
+                                    dashboard.js expects:
+
+                                        eventDetected
+                                -->
+
+                                <strong id="eventDetected">
+                                    11 Aug 2026, 10:30 AM
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             LOCATION / COORDINATES
+                             ================================================= -->
+
+                        <div class="detail-item">
+
+                            <span class="detail-icon">
+                                📍
+                            </span>
+
+                            <div>
+
+                                <span>
+                                    LOCATION
+                                </span>
+
+
+                                <!--
+                                    This will eventually display
+                                    the coordinates of the selected
+                                    wildfire.
+                                -->
+
+                                <strong id="eventCoordinates">
+                                    40.12° N, -121.45° W
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             ACTIVITY LEVEL
+                             ================================================= -->
+
+                        <div class="detail-item">
+
+                            <span class="detail-icon">
+                                📊
+                            </span>
+
+                            <div>
+
+                                <span>
+                                    ACTIVITY LEVEL
+                                </span>
+
+                                <strong>
+                                    🔴 High
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             AREA AFFECTED
+                             =================================================
+
+                             This is currently placeholder information.
+
+                             We should NOT present it as actual NASA
+                             data until we have a data source that
+                             provides affected area.
+                        -->
+
+                        <div class="detail-item">
+
+                            <span class="detail-icon">
+                                🏔️
+                            </span>
+
+                            <div>
+
+                                <span>
+                                    AREA AFFECTED
+                                </span>
+
+                                <strong>
+                                    32,500 ha
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             DATA SOURCE
+                             ================================================= -->
+
+                        <div class="detail-item">
+
+                            <span class="detail-icon">
+                                🔗
+                            </span>
+
+                            <div>
+
+                                <span>
+                                    SOURCE
+                                </span>
+
+                                <strong>
+                                    NASA EONET
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         VIEW FULL DETAILS BUTTON
+                         =================================================
+
+                         This button is prepared for future
+                         functionality.
+
+                         For example, we can later open a detailed
+                         disaster information page.
+                    -->
+
+                    <button
+                        class="primary-button"
+                        id="viewDetails"
+                        type="button"
+                    >
+
+                        View full details
+
+                        <span>
+                            →
+                        </span>
+
+                    </button>
+
+                </aside>
+
+            </section>
+
+
+            <!-- =====================================================
+                 8. BOTTOM DASHBOARD
+                 =====================================================
+
+                 This contains:
+
+                     Recent Activity
+                     Events Trend
+            -->
+
+
+            <section class="bottom-grid">
+
+
+                <!-- =================================================
+                     8A. RECENT ACTIVITY
+                     =================================================
+
+                     This table will eventually be filled with
+                     real API data.
+
+                     dashboard.js creates the rows dynamically.
+                -->
+
+
+                <section class="recent-activity">
+
+
+                    <!-- SECTION HEADER -->
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h3>
+                                Recent Activity
+                            </h3>
+
+                            <p>
+                                Latest detected disaster events
+                            </p>
+
+                        </div>
+
+
+                        <!--
+                            Prepared for future functionality.
+                        -->
+
+                        <button
+                            class="text-button"
+                            type="button"
+                        >
+                            View all →
+                        </button>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         TABLE CONTAINER
+                         =================================================
+
+                         The wrapper allows the table to scroll
+                         horizontally on smaller screens.
+                    -->
+
+                    <div class="table-container">
+
+
+                        <table>
+
+
+                            <!-- TABLE HEAD -->
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        EVENT
+                                    </th>
+
+                                    <th>
+                                        LOCATION
+                                    </th>
+
+                                    <th>
+                                        TYPE
+                                    </th>
+
+                                    <th>
+                                        STATUS
+                                    </th>
+
+                                    <th>
+                                        TIME
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <!-- =================================================
+                                 TABLE BODY
+                                 =================================================
+
+                                 IMPORTANT:
+
+                                 The ID:
+
+                                     activityTable
+
+                                 is used by dashboard.js.
+
+                                 JavaScript will remove these
+                                 temporary rows and generate
+                                 rows using actual API data.
+                            -->
+
+                            <tbody id="activityTable">
+
+
+                                <!-- TEMPORARY WILDFIRE ROW -->
+
+                                <tr>
+
+                                    <td>
+                                        🔥 Dixie Fire
+                                    </td>
+
+                                    <td>
+                                        California, USA
+                                    </td>
+
+                                    <td>
+                                        Wildfire
+                                    </td>
+
+                                    <td>
+
+                                        <span
+                                            class="status-badge high"
+                                        >
+                                            High
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+                                        2 min ago
+                                    </td>
+
+                                </tr>
+
+
+                                <!-- TEMPORARY FLOOD ROW -->
+
+                                <tr>
+
+                                    <td>
+                                        🌊 Flood Alert
+                                    </td>
+
+                                    <td>
+                                        Pakistan
+                                    </td>
+
+                                    <td>
+                                        Flood
+                                    </td>
+
+                                    <td>
+
+                                        <span
+                                            class="status-badge medium"
+                                        >
+                                            Moderate
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+                                        15 min ago
+                                    </td>
+
+                                </tr>
+
+
+                                <!-- TEMPORARY EARTHQUAKE ROW -->
+
+                                <tr>
+
+                                    <td>
+                                        〽 M6.1 Earthquake
+                                    </td>
+
+                                    <td>
+                                        Japan
+                                    </td>
+
+                                    <td>
+                                        Earthquake
+                                    </td>
+
+                                    <td>
+
+                                        <span
+                                            class="status-badge high"
+                                        >
+                                            High
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+                                        32 min ago
+                                    </td>
+
+                                </tr>
+
+
+                                <!-- TEMPORARY DUST STORM ROW -->
+
+                                <tr>
+
+                                    <td>
+                                        🌫️ Dust Storm
+                                    </td>
+
+                                    <td>
+                                        Saudi Arabia
+                                    </td>
+
+                                    <td>
+                                        Dust Storm
+                                    </td>
+
+                                    <td>
+
+                                        <span
+                                            class="status-badge medium"
+                                        >
+                                            Moderate
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+                                        1 hr ago
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     8B. EVENTS TREND / CHART
+                     =================================================
+
+                     This is currently a placeholder.
+
+                     Later we can use JavaScript and a chart
+                     library OR create our own chart using
+                     HTML/CSS/JavaScript.
+
+                     It can show the number of events over
+                     the last 7 or 30 days.
+                -->
+
+
+                <section class="activity-chart">
+
+
+                    <!-- CHART HEADER -->
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h3>
+                                Events Trend
+                            </h3>
+
+                            <p>
+                                Last 7 days
+                            </p>
+
+                        </div>
+
+
+                        <!--
+                            User can eventually change the
+                            chart time period.
+                        -->
+
+                        <select id="chartPeriod">
+
+                            <option value="7">
+                                Last 7 days
+                            </option>
+
+                            <option value="30">
+                                Last 30 days
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         CHART CONTAINER
+                         =================================================
+
+                         JavaScript will eventually place the
+                         actual chart inside this container.
+                    -->
+
+                    <div
+                        id="activityChart"
+                        class="chart-container"
+                    >
+
+                        <!-- Temporary placeholder -->
+
+                        <div class="chart-placeholder">
+
+                            <span>
+                                📈
+                            </span>
+
+                            <span>
+                                Activity chart will appear here
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         9. JAVASCRIPT FILES
+         =====================================================
+
+         We have divided JavaScript into separate files too.
+
+         Each file has ONE main responsibility.
+
+         config.js
+             → stores configuration
+
+         api.js
+             → communicates with NASA EONET
+
+         map.js
+             → creates map and markers
+
+         dashboard.js
+             → puts API data into the dashboard
+
+         theme.js
+             → handles dark/light mode
+
+         navigation.js
+             → handles sidebar navigation
+
+         app.js
+             → starts the application
+
+
+         IMPORTANT:
+         The order matters.
+
+         A file that another file depends on must be loaded
+         BEFORE that file.
+    -->
+
+
+    <!--
+        FIRST:
+
+        Configuration must be loaded before the other files
+        because they use values stored in config.js.
+    -->
+   <!-- =====================================================
+     LEAFLET JAVASCRIPT LIBRARY
+     =====================================================
+
+     Leaflet MUST be loaded before map.js because
+     map.js uses Leaflet functions such as:
+
+         L.map()
+         L.marker()
+         L.tileLayer()
+         L.popup()
+
+     Therefore Leaflet comes FIRST.
+-->
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+
+<!-- =====================================================
+     1. CONFIG.JS
+     =====================================================
+
+     Contains configuration values such as:
+
+         Map center
+         Zoom limits
+         Other application settings
+-->
+
+<script src="javascript/config.js"></script>
+
+
+<!-- =====================================================
+     2. API.JS
+     =====================================================
+
+     Contains all our API functions.
+
+     Examples:
+
+         getWildfireLocations()
+         getEarthquakeLocations()
+         getFloodLocations()
+         getVolcanoLocations()
+
+     event-panel.js and map.js use these functions.
+-->
+
+<script src="javascript/api.js"></script>
+
+
+<!-- =====================================================
+     3. EVENT-PANEL.JS
+     =====================================================
+
+     Controls the information displayed inside the
+     Event Panel.
+
+     Example:
+
+         🔥 → Wildfire information
+
+         〽️ → Earthquake information
+
+         🌊 → Flood information
+
+     IMPORTANT:
+
+     This MUST come before map.js because map.js calls:
+
+         updateEventPanel()
+-->
+
+<script src="javascript/event-panel.js"></script>
+
+
+<!-- =====================================================
+     4. MAP.JS
+     =====================================================
+
+     Controls:
+
+         Interactive map
+         Markers
+         Zoom
+         Map/Satellite
+         Disaster emojis
+         Map popups
+-->
+
+<script src="javascript/map.js"></script>
+
+
+<!-- =====================================================
+     5. DASHBOARD.JS
+     =====================================================
+
+     Controls the dashboard statistics and API data
+     displayed in the dashboard.
+-->
+
+<script src="javascript/dashboard.js"></script>
+
+
+<!-- =====================================================
+     6. THEME.JS
+     =====================================================
+
+     Controls:
+
+         Dark mode
+         Light mode
+-->
+
+<script src="javascript/theme.js"></script>
+
+
+<!-- =====================================================
+     7. NAVIGATION.JS
+     =====================================================
+
+     Controls:
+
+         Sidebar
+         Disaster selection
+         Mobile navigation
+-->
+
+<script src="javascript/navigation.js"></script>
+
+
+<!-- =====================================================
+     8. APP.JS
+     =====================================================
+
+     Main application entry point.
+
+     This starts the application after all required
+     functions have already been loaded.
+-->
+
+<script src="javascript/app.js"></script>
+
+
+</body>
+
+</html>

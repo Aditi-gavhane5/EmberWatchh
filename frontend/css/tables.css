@@ -1,0 +1,553 @@
+/* =========================================================
+   EMBERWATCH - TABLE STYLES
+   =========================================================
+
+   This file controls the Recent Activity table.
+
+   The table will eventually contain REAL data from our API.
+
+   For now, index.html contains a few temporary rows so
+   that we can see how the design looks.
+
+   Later JavaScript will generate these rows automatically.
+*/
+
+
+/* =========================================================
+   1. TABLE CONTAINER
+   =========================================================
+
+   This wrapper allows the table to scroll horizontally on
+   smaller screens instead of breaking the entire page.
+*/
+
+.table-container {
+
+    width: 100%;
+
+    /*
+        Horizontal scrolling is useful when the screen is
+        too narrow to display all columns.
+    */
+
+    overflow-x: auto;
+
+    /*
+        Prevent the scrollbar from touching the content.
+    */
+
+    padding-bottom: 2px;
+
+    /*
+        Smooth scrolling on mobile devices.
+    */
+
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/* =========================================================
+   2. TABLE
+   ========================================================= */
+
+.table-container table {
+
+    width: 100%;
+
+    /*
+        Prevent columns from becoming unpredictably wide.
+    */
+
+    border-collapse: collapse;
+
+    /*
+        Minimum width means the table remains readable
+        instead of crushing all the columns together.
+    */
+
+    min-width: 600px;
+}
+
+
+/* =========================================================
+   3. TABLE HEADER
+   =========================================================
+
+   Example:
+
+   EVENT | LOCATION | TYPE | STATUS | TIME
+*/
+
+.table-container thead {
+
+    border-bottom: 1px solid var(--border-color);
+}
+
+
+/* Header cells */
+
+.table-container th {
+
+    padding: 10px 8px;
+
+    /*
+        Align everything to the left for a clean
+        information-table appearance.
+    */
+
+    text-align: left;
+
+    color: var(--text-muted);
+
+    font-size: 8px;
+
+    font-weight: 600;
+
+    /*
+        Uppercase headings make the table easier to scan.
+    */
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.08em;
+
+    /*
+        Prevent headers from wrapping unnecessarily.
+    */
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   4. TABLE BODY
+   ========================================================= */
+
+.table-container tbody tr {
+
+    /*
+        Subtle divider between rows.
+    */
+
+    border-bottom: 1px solid var(--border-color);
+
+    /*
+        Smooth hover effect.
+    */
+
+    transition:
+        background-color var(--transition-fast);
+}
+
+
+/*
+    Remove the divider from the final row.
+*/
+
+.table-container tbody tr:last-child {
+
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   5. ROW HOVER
+   ========================================================= */
+
+.table-container tbody tr:hover {
+
+    background-color: var(--bg-card-hover);
+}
+
+
+/* =========================================================
+   6. TABLE CELLS
+   ========================================================= */
+
+.table-container td {
+
+    padding: 12px 8px;
+
+    color: var(--text-secondary);
+
+    font-size: 9px;
+
+    line-height: 1.4;
+
+    /*
+        Keep rows compact.
+
+        We don't want a table row to look like a card.
+    */
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   7. EVENT NAME
+   =========================================================
+
+   The first column contains the event name and icon.
+
+   Example:
+
+   🔥 Dixie Fire
+*/
+
+.table-container td:first-child {
+
+    color: var(--text-primary);
+
+    font-weight: 550;
+}
+
+
+/* =========================================================
+   8. LOCATION
+   ========================================================= */
+
+.table-container td:nth-child(2) {
+
+    color: var(--text-secondary);
+}
+
+
+/* =========================================================
+   9. EVENT TYPE
+   ========================================================= */
+
+.table-container td:nth-child(3) {
+
+    color: var(--text-muted);
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
+   10. TIME
+   ========================================================= */
+
+.table-container td:last-child {
+
+    color: var(--text-muted);
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
+   11. STATUS BADGES
+   =========================================================
+
+   These are the small badges such as:
+
+   High
+   Moderate
+   Low
+*/
+
+
+.status-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 4px 7px;
+
+    border-radius: 4px;
+
+    font-size: 8px;
+
+    font-weight: 600;
+
+    line-height: 1;
+
+    white-space: nowrap;
+}
+
+
+/*
+   Small status dot.
+
+   Instead of adding another HTML element, we create
+   the dot with ::before.
+*/
+
+.status-badge::before {
+
+    content: "";
+
+    width: 5px;
+
+    height: 5px;
+
+    border-radius: 50%;
+
+    background-color: currentColor;
+}
+
+
+/* =========================================================
+   12. HIGH STATUS
+   ========================================================= */
+
+.status-badge.high {
+
+    color: var(--severity-high);
+
+    background-color:
+        rgba(239, 68, 68, 0.08);
+
+    border: 1px solid
+        rgba(239, 68, 68, 0.15);
+}
+
+
+/* =========================================================
+   13. MODERATE STATUS
+   ========================================================= */
+
+.status-badge.medium {
+
+    color: var(--severity-medium);
+
+    background-color:
+        rgba(245, 158, 11, 0.08);
+
+    border: 1px solid
+        rgba(245, 158, 11, 0.15);
+}
+
+
+/* =========================================================
+   14. LOW STATUS
+   ========================================================= */
+
+.status-badge.low {
+
+    color: var(--severity-low);
+
+    background-color:
+        rgba(34, 197, 94, 0.08);
+
+    border: 1px solid
+        rgba(34, 197, 94, 0.15);
+}
+
+
+/* =========================================================
+   15. EVENT TYPE COLORS
+   =========================================================
+
+   Eventually our table can display different disaster
+   types.
+
+   This lets us give each type a small visual identity.
+
+   Example:
+
+   🔥 Wildfire → Orange
+   🌊 Flood → Blue
+   🌋 Volcano → Red
+*/
+
+
+.event-type-fire {
+
+    color: var(--fire) !important;
+}
+
+
+.event-type-flood {
+
+    color: var(--flood) !important;
+}
+
+
+.event-type-earthquake {
+
+    color: var(--earthquake) !important;
+}
+
+
+.event-type-dust {
+
+    color: var(--dust-storm) !important;
+}
+
+
+.event-type-sand {
+
+    color: var(--sand-storm) !important;
+}
+
+
+.event-type-volcano {
+
+    color: var(--volcano) !important;
+}
+
+
+.event-type-storm {
+
+    color: var(--severe-storm) !important;
+}
+
+
+/* =========================================================
+   16. EMPTY TABLE STATE
+   =========================================================
+
+   Later, if the API returns no events, JavaScript can
+   display a message such as:
+
+       No wildfire events found.
+*/
+
+.table-empty {
+
+    padding: 35px 20px;
+
+    text-align: center;
+
+    color: var(--text-muted);
+
+    font-size: 10px;
+}
+
+
+/* Empty state icon */
+
+.table-empty-icon {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 24px;
+
+    opacity: 0.6;
+}
+
+
+/* =========================================================
+   17. LOADING STATE
+   =========================================================
+
+   While API data is being fetched, we can use this class.
+*/
+
+.table-loading td {
+
+    color: var(--text-muted);
+
+    animation:
+        tablePulse 1.4s ease-in-out infinite;
+}
+
+
+/*
+    Simple loading animation.
+
+    The row becomes slightly more/less visible while
+    JavaScript waits for the API response.
+*/
+
+@keyframes tablePulse {
+
+    0% {
+
+        opacity: 0.45;
+
+    }
+
+    50% {
+
+        opacity: 1;
+
+    }
+
+    100% {
+
+        opacity: 0.45;
+
+    }
+
+}
+
+
+/* =========================================================
+   18. LIGHT MODE
+   ========================================================= */
+
+body.light-mode .recent-activity {
+
+    /*
+        The parent section is actually styled in
+        dashboard.css.
+
+        This shadow simply gives the table container
+        a little separation in light mode.
+    */
+
+    box-shadow: var(--shadow-small);
+}
+
+
+/* =========================================================
+   19. MOBILE TABLE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    /*
+        Keep the table readable by allowing horizontal
+        scrolling instead of shrinking the text too much.
+    */
+
+    .table-container {
+
+        overflow-x: auto;
+    }
+
+
+    .table-container table {
+
+        min-width: 560px;
+    }
+
+
+    .table-container th {
+
+        padding: 9px 7px;
+
+        font-size: 7px;
+    }
+
+
+    .table-container td {
+
+        padding: 11px 7px;
+
+        font-size: 8px;
+    }
+
+
+    .status-badge {
+
+        font-size: 7px;
+
+        padding: 4px 6px;
+    }
+
+}
+
+
+/* =========================================================
+   END OF TABLE STYLES
+   ========================================================= */

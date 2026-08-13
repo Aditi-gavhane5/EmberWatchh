@@ -1,0 +1,615 @@
+/* =========================================================
+   EMBERWATCH - NAVBAR
+   =========================================================
+
+   This file controls the top navigation bar.
+
+   The navbar contains:
+
+   - Mobile menu button
+   - Search bar
+   - Last updated indicator
+   - Light / dark mode button
+   - Profile circle
+   - Profile arrow
+
+   The sidebar is handled separately in sidebar.css.
+*/
+
+
+/* =========================================================
+   1. MAIN NAVBAR
+   ========================================================= */
+
+.navbar {
+
+    /*
+        The navbar sits at the top of the main content area.
+
+        We use position: sticky so that when the user scrolls,
+        the navbar remains visible.
+    */
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 900;
+
+    /*
+        Height comes from our design variables.
+    */
+
+    height: var(--navbar-height);
+
+    /*
+        The navbar stretches across the main content area.
+    */
+
+    width: 100%;
+
+    /*
+        Horizontal layout.
+    */
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    /*
+        Padding gives the content breathing room.
+    */
+
+    padding: 0 var(--content-padding);
+
+    /*
+        Use our application background instead of a
+        completely different color.
+    */
+
+    background-color: var(--bg-primary);
+
+    /*
+        Subtle bottom border separates the navbar from
+        the dashboard.
+    */
+
+    border-bottom: 1px solid var(--border-color);
+
+    /*
+        Small blur helps the sticky navbar feel integrated
+        with the content underneath it.
+
+        The background remains mostly opaque so the
+        interface doesn't become overly glassmorphic.
+    */
+
+    backdrop-filter: blur(8px);
+
+    transition:
+        background-color var(--transition-normal),
+        border-color var(--transition-normal);
+}
+
+
+/* =========================================================
+   2. LEFT SIDE
+   ========================================================= */
+
+.navbar-left {
+
+    display: flex;
+
+    align-items: center;
+
+    /*
+        Allows the left side to shrink if the screen gets
+        smaller.
+    */
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   3. MOBILE MENU BUTTON
+   =========================================================
+
+   On desktop this button is hidden.
+
+   responsive.css will display it on smaller screens.
+*/
+
+.mobile-menu {
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 38px;
+    height: 38px;
+
+    font-size: 20px;
+
+    color: var(--text-secondary);
+
+    cursor: pointer;
+
+    border-radius: var(--radius-small);
+}
+
+
+/* Hover state */
+
+.mobile-menu:hover {
+
+    background-color: var(--bg-card);
+
+    color: var(--text-primary);
+}
+
+
+/* =========================================================
+   4. SEARCH BAR
+   ========================================================= */
+
+.navbar-search {
+
+    /*
+        This is the main search container.
+
+        It has a flexible width so it can grow/shrink
+        depending on the available screen space.
+    */
+
+    width: min(380px, 40vw);
+
+    min-width: 200px;
+
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 0 13px;
+
+    background-color: var(--bg-card);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-medium);
+
+    transition:
+        border-color var(--transition-fast),
+        background-color var(--transition-fast);
+}
+
+
+/*
+    When the search box contains the active input,
+    JavaScript/CSS can use focus-within to highlight
+    the entire container.
+*/
+
+.navbar-search:focus-within {
+
+    border-color: var(--orange);
+
+    /*
+        Very subtle orange glow.
+    */
+
+    box-shadow:
+        0 0 0 2px rgba(255, 90, 10, 0.08);
+}
+
+
+/* =========================================================
+   5. SEARCH ICON
+   ========================================================= */
+
+.search-icon {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 18px;
+
+    color: var(--text-muted);
+
+    font-size: 20px;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   6. SEARCH INPUT
+   ========================================================= */
+
+.navbar-search input {
+
+    width: 100%;
+
+    min-width: 0;
+
+    /*
+        Remove default browser styling.
+    */
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: var(--text-primary);
+
+    font-size: 12px;
+}
+
+
+/*
+    Placeholder text should be quieter than normal text.
+*/
+
+.navbar-search input::placeholder {
+
+    color: var(--text-muted);
+
+    opacity: 1;
+}
+
+
+/* =========================================================
+   7. NAVBAR ACTIONS
+   =========================================================
+
+   Everything on the right side is grouped together.
+*/
+
+.navbar-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    /*
+        Prevent the group from becoming smaller than
+        the content inside it.
+    */
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   8. LAST UPDATED
+   ========================================================= */
+
+.last-updated {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: var(--text-muted);
+
+    font-size: 10px;
+
+    white-space: nowrap;
+}
+
+
+/*
+    The strong element contains the actual time.
+
+    Example:
+
+    Last updated: 2 min ago
+*/
+
+.last-updated strong {
+
+    color: var(--text-secondary);
+
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   9. THEME TOGGLE
+   =========================================================
+
+   This button will eventually be controlled by theme.js.
+
+   Dark mode:
+       ☀️
+
+   Light mode:
+       🌙
+*/
+
+.theme-toggle {
+
+    width: 36px;
+
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background-color: var(--bg-card);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 50%;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition:
+        background-color var(--transition-fast),
+        border-color var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+
+/*
+    Hover effect.
+
+    A tiny movement makes the control feel interactive
+    without becoming flashy.
+*/
+
+.theme-toggle:hover {
+
+    background-color: var(--bg-card-hover);
+
+    border-color: var(--border-light);
+
+    transform: rotate(8deg);
+}
+
+
+/*
+    When the user presses the button, it moves slightly
+    inward.
+*/
+
+.theme-toggle:active {
+
+    transform: scale(0.94);
+}
+
+
+/* =========================================================
+   10. PROFILE CIRCLE
+   ========================================================= */
+
+.profile-circle {
+
+    width: 34px;
+
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    /*
+        Orange is used as a small brand accent.
+    */
+
+    background-color: var(--orange);
+
+    color: #ffffff;
+
+    border-radius: 50%;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    /*
+        Small orange shadow.
+    */
+
+    box-shadow:
+        0 0 12px rgba(255, 90, 10, 0.15);
+}
+
+
+/* =========================================================
+   11. PROFILE ARROW
+   ========================================================= */
+
+.profile-arrow {
+
+    color: var(--text-muted);
+
+    font-size: 15px;
+
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+
+/*
+    Small hover response.
+*/
+
+.profile-arrow:hover {
+
+    color: var(--text-primary);
+}
+
+
+/* =========================================================
+   12. LIGHT MODE
+   ========================================================= */
+
+body.light-mode .navbar {
+
+    /*
+        In light mode the navbar remains mostly white,
+        matching the rest of the application.
+    */
+
+    background-color: rgba(247, 247, 245, 0.94);
+
+    box-shadow:
+        0 2px 12px rgba(0, 0, 0, 0.03);
+}
+
+
+/* =========================================================
+   13. RESPONSIVE NAVBAR
+   =========================================================
+
+   These are the first small responsive adjustments.
+
+   The larger mobile layout will be handled by
+   responsive.css later.
+*/
+
+
+@media (max-width: 900px) {
+
+    /*
+        The "Last updated" text takes up quite a lot of
+        horizontal space on smaller screens.
+
+        Hide it temporarily.
+    */
+
+    .last-updated {
+
+        display: none;
+    }
+
+
+    /*
+        Give the search bar a little more room.
+    */
+
+    .navbar-search {
+
+        width: min(400px, 55vw);
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    /*
+        Show the mobile menu button.
+    */
+
+    .mobile-menu {
+
+        display: flex;
+    }
+
+
+    /*
+        The sidebar itself will eventually become a
+        mobile drawer in responsive.css.
+    */
+
+    .navbar {
+
+        padding: 0 18px;
+
+        gap: 12px;
+    }
+
+
+    /*
+        Search becomes more flexible.
+    */
+
+    .navbar-search {
+
+        flex: 1;
+
+        width: auto;
+
+        min-width: 0;
+    }
+
+
+    /*
+        The profile arrow is not essential on small screens.
+    */
+
+    .profile-arrow {
+
+        display: none;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    /*
+        On very small screens, hide the profile circle
+        so the search bar has enough room.
+    */
+
+    .profile-circle {
+
+        display: none;
+    }
+
+
+    /*
+        Slightly reduce the gap between navbar elements.
+    */
+
+    .navbar-actions {
+
+        gap: 8px;
+    }
+
+
+    /*
+        Search bar can become a little shorter.
+    */
+
+    .navbar-search {
+
+        height: 38px;
+    }
+}
+
+
+/* =========================================================
+   END OF NAVBAR STYLES
+   ========================================================= */

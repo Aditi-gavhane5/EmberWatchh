@@ -1,0 +1,746 @@
+/* =========================================================
+   EMBERWATCH - EVENT PANEL
+   =========================================================
+
+   This file controls the right-side event information panel.
+
+   The panel displays information about the wildfire that
+   the user has selected on the map.
+
+   IMPORTANT:
+
+   This file controls ONLY the appearance.
+
+   Later, JavaScript will make the panel dynamic:
+
+       User clicks wildfire marker
+                    ↓
+              map.js detects it
+                    ↓
+             Event information
+                    ↓
+          dashboard.js updates panel
+*/
+
+
+/* =========================================================
+   1. MAIN EVENT PANEL
+   ========================================================= */
+
+.event-panel {
+
+    /*
+        This panel sits beside the map.
+    */
+
+    min-width: 0;
+
+    /*
+        Use our card background so it feels connected to
+        the rest of the dashboard.
+    */
+
+    background-color: var(--bg-card);
+
+    /*
+        Very subtle border.
+    */
+
+    border: 1px solid var(--border-color);
+
+    /*
+        Controlled corner rounding.
+    */
+
+    border-radius: var(--radius-medium);
+
+    /*
+        Internal spacing.
+    */
+
+    padding: 20px;
+
+    /*
+        The panel should be tall enough to visually match
+        the map.
+    */
+
+    min-height: 500px;
+
+    /*
+        Prevent long information from overflowing.
+    */
+
+    overflow: hidden;
+
+    /*
+        Smooth theme transition.
+    */
+
+    transition:
+        background-color var(--transition-normal),
+        border-color var(--transition-normal);
+}
+
+
+/* =========================================================
+   2. PANEL HEADER
+   =========================================================
+
+   Example:
+
+   WILDFIRE EVENT                         ×
+*/
+
+.event-panel-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    /*
+        Small separation before the event title.
+    */
+
+    margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   3. EVENT TYPE LABEL
+   =========================================================
+
+   This tells the user what kind of event they are viewing.
+
+   Example:
+
+   WILDFIRE EVENT
+*/
+
+.event-label {
+
+    color: var(--orange);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   4. CLOSE BUTTON
+   =========================================================
+
+   Later this can hide the panel or clear the selected event.
+*/
+
+.close-panel {
+
+    width: 28px;
+
+    height: 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: var(--text-muted);
+
+    font-size: 20px;
+
+    line-height: 1;
+
+    border-radius: var(--radius-small);
+
+    cursor: pointer;
+
+    transition:
+        background-color var(--transition-fast),
+        color var(--transition-fast);
+}
+
+
+/* Hover */
+
+.close-panel:hover {
+
+    background-color: var(--bg-card-hover);
+
+    color: var(--text-primary);
+}
+
+
+/* =========================================================
+   5. EVENT TITLE SECTION
+   =========================================================
+
+   Example:
+
+   🔥   Dixie Fire
+        California, United States
+*/
+
+.event-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    /*
+        Space below the title before the status.
+    */
+
+    margin-bottom: 16px;
+}
+
+
+/* =========================================================
+   6. EVENT ICON
+   ========================================================= */
+
+.event-icon {
+
+    width: 48px;
+
+    height: 48px;
+
+    min-width: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    /*
+        Very subtle orange background.
+    */
+
+    background-color:
+        rgba(255, 75, 31, 0.10);
+
+    /*
+        Orange border.
+    */
+
+    border: 1px solid
+        rgba(255, 90, 10, 0.22);
+
+    border-radius: var(--radius-medium);
+
+    font-size: 24px;
+
+    /*
+        Small glow gives the fire icon some presence.
+    */
+
+    box-shadow:
+        0 0 15px rgba(255, 75, 31, 0.10);
+}
+
+
+/* =========================================================
+   7. EVENT NAME
+   ========================================================= */
+
+.event-title h3 {
+
+    color: var(--text-primary);
+
+    font-size: 16px;
+
+    font-weight: 650;
+
+    line-height: 1.25;
+}
+
+
+/* =========================================================
+   8. EVENT LOCATION
+   ========================================================= */
+
+.event-title p {
+
+    margin-top: 4px;
+
+    color: var(--text-secondary);
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   9. EVENT STATUS
+   =========================================================
+
+   Example:
+
+   ● High Activity
+*/
+
+.event-status {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    /*
+        Small status badge rather than a giant card.
+    */
+
+    padding: 6px 9px;
+
+    background-color:
+        rgba(239, 68, 68, 0.09);
+
+    border: 1px solid
+        rgba(239, 68, 68, 0.18);
+
+    border-radius: 5px;
+
+    color: var(--severity-high);
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    /*
+        Give the status a little visual importance.
+    */
+
+    margin-bottom: 22px;
+}
+
+
+/*
+    Small dot before the status text.
+
+    We create it using a pseudo-element so we don't need
+    another HTML element.
+*/
+
+.event-status::before {
+
+    content: "";
+
+    width: 6px;
+
+    height: 6px;
+
+    border-radius: 50%;
+
+    background-color: var(--severity-high);
+
+    box-shadow:
+        0 0 6px rgba(239, 68, 68, 0.35);
+}
+
+
+/* =========================================================
+   10. EVENT DETAILS
+   =========================================================
+
+   This contains:
+
+   Detected
+   Location
+   Activity Level
+   Area Affected
+   Source
+*/
+
+.event-details {
+
+    display: flex;
+
+    flex-direction: column;
+
+    /*
+        Space between each information row.
+    */
+
+    gap: 0;
+}
+
+
+/* =========================================================
+   11. INDIVIDUAL DETAIL ITEM
+   ========================================================= */
+
+.detail-item {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    /*
+        Internal vertical spacing.
+    */
+
+    padding: 14px 0;
+
+    /*
+        Divider between details.
+    */
+
+    border-bottom: 1px solid var(--border-color);
+}
+
+
+/*
+    Don't add a divider below the final item.
+*/
+
+.detail-item:last-child {
+
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   12. DETAIL ICON
+   ========================================================= */
+
+.detail-icon {
+
+    width: 30px;
+
+    height: 30px;
+
+    min-width: 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background-color: var(--bg-secondary);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-small);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   13. DETAIL TEXT CONTAINER
+   ========================================================= */
+
+.detail-item > div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   14. DETAIL LABEL
+   =========================================================
+
+   Examples:
+
+   DETECTED
+   LOCATION
+   ACTIVITY LEVEL
+*/
+
+.detail-item > div > span {
+
+    color: var(--text-muted);
+
+    font-size: 8px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.10em;
+}
+
+
+/* =========================================================
+   15. DETAIL VALUE
+   =========================================================
+
+   Examples:
+
+   11 Aug 2026, 10:30 AM
+   40.12° N, -121.45° W
+*/
+
+.detail-item > div > strong {
+
+    color: var(--text-primary);
+
+    font-size: 10px;
+
+    font-weight: 500;
+
+    line-height: 1.4;
+
+    /*
+        Long coordinates should not break the panel.
+    */
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   16. PRIMARY BUTTON
+   =========================================================
+
+   This button is reused by the event panel.
+
+   Example:
+
+   ┌──────────────────────────────┐
+   │     View full details    →   │
+   └──────────────────────────────┘
+*/
+
+.primary-button {
+
+    width: 100%;
+
+    min-height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-top: 18px;
+
+    padding: 0 14px;
+
+    /*
+        Main EMBERWATCH orange.
+    */
+
+    background-color: var(--orange);
+
+    color: #ffffff;
+
+    border: 1px solid var(--orange);
+
+    border-radius: var(--radius-small);
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color var(--transition-fast),
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+
+/* Button arrow */
+
+.primary-button span {
+
+    font-size: 15px;
+
+    line-height: 1;
+
+    transition:
+        transform var(--transition-fast);
+}
+
+
+/* Hover */
+
+.primary-button:hover {
+
+    background-color: var(--orange-light);
+
+    box-shadow:
+        0 5px 16px rgba(255, 90, 10, 0.18);
+}
+
+
+/*
+    Move the arrow slightly when hovering.
+*/
+
+.primary-button:hover span {
+
+    transform: translateX(3px);
+}
+
+
+/* Press */
+
+.primary-button:active {
+
+    transform: scale(0.985);
+
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   17. EVENT PANEL SCROLLING
+   =========================================================
+
+   If an event has lots of information in the future,
+   the panel should be able to scroll instead of breaking
+   the dashboard.
+*/
+
+.event-panel {
+
+    overflow-y: auto;
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        var(--border-light)
+        transparent;
+}
+
+
+/* Chromium scrollbar */
+
+.event-panel::-webkit-scrollbar {
+
+    width: 5px;
+}
+
+
+.event-panel::-webkit-scrollbar-track {
+
+    background: transparent;
+}
+
+
+.event-panel::-webkit-scrollbar-thumb {
+
+    background-color: var(--border-light);
+
+    border-radius: 10px;
+}
+
+
+/* =========================================================
+   18. LIGHT MODE
+   ========================================================= */
+
+body.light-mode .event-panel {
+
+    /*
+        Slight shadow helps separate the white panel from
+        the light background.
+    */
+
+    box-shadow: var(--shadow-small);
+}
+
+
+/*
+    Light mode event icon.
+*/
+
+body.light-mode .event-icon {
+
+    background-color:
+        rgba(237, 75, 0, 0.07);
+
+    border-color:
+        rgba(237, 75, 0, 0.16);
+}
+
+
+/* =========================================================
+   19. RESPONSIVE EVENT PANEL
+   ========================================================= */
+
+
+/* Tablet */
+
+@media (max-width: 900px) {
+
+    .event-panel {
+
+        min-height: auto;
+
+        padding: 18px;
+    }
+
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .event-panel {
+
+        padding: 16px;
+
+    }
+
+
+    .event-title h3 {
+
+        font-size: 15px;
+
+    }
+
+
+    .event-icon {
+
+        width: 44px;
+
+        height: 44px;
+
+        min-width: 44px;
+
+        font-size: 22px;
+
+    }
+
+
+    .detail-item {
+
+        padding: 12px 0;
+
+    }
+
+}
+
+
+/* =========================================================
+   END OF EVENT PANEL STYLES
+   ========================================================= */

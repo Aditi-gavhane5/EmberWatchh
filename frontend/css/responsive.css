@@ -1,0 +1,659 @@
+/* =========================================================
+   EMBERWATCH - RESPONSIVE DESIGN
+   =========================================================
+
+   This file controls how EMBERWATCH adapts to different
+   screen sizes.
+
+   Desktop
+      ↓
+   Tablet
+      ↓
+   Mobile
+
+   We have already added some small responsive rules inside
+   individual CSS files.
+
+   This file handles the BIG layout changes.
+
+   IMPORTANT:
+   We are not creating a separate mobile website.
+
+   We are making the SAME HTML automatically rearrange
+   itself depending on screen size.
+*/
+
+
+/* =========================================================
+   1. LARGE DESKTOP
+   =========================================================
+
+   Large screens have plenty of space, so the full layout
+   can be displayed.
+*/
+
+@media (min-width: 1400px) {
+
+    /*
+        Give the dashboard slightly more breathing room.
+    */
+
+    .dashboard {
+
+        padding-left: 32px;
+        padding-right: 32px;
+
+    }
+
+
+    /*
+        The map can become a little taller on very large
+        screens.
+    */
+
+    .map {
+
+        height: 540px;
+
+    }
+
+}
+
+
+/* =========================================================
+   2. LAPTOP
+   =========================================================
+
+   Around 1200px, we start reducing spacing slightly.
+
+   This is useful for normal laptops.
+*/
+
+@media (max-width: 1200px) {
+
+    /*
+        Reduce the overall dashboard padding.
+    */
+
+    .dashboard {
+
+        padding-left: 22px;
+        padding-right: 22px;
+
+    }
+
+
+    /*
+        Sidebar remains visible, but the content area
+        becomes slightly tighter.
+    */
+
+    :root {
+
+        --sidebar-width: 215px;
+
+    }
+
+
+    /*
+        Search bar becomes slightly smaller.
+    */
+
+    .navbar-search {
+
+        width: min(330px, 35vw);
+
+    }
+
+}
+
+
+/* =========================================================
+   3. SMALL LAPTOP / TABLET LANDSCAPE
+   =========================================================
+
+   At this size, four statistic cards may no longer have
+   enough horizontal space.
+
+   cards.css already changes them to two columns.
+*/
+
+@media (max-width: 1000px) {
+
+    /*
+        Reduce sidebar width a little.
+    */
+
+    :root {
+
+        --sidebar-width: 200px;
+
+    }
+
+
+    /*
+        Reduce navbar spacing.
+    */
+
+    .navbar {
+
+        padding-left: 18px;
+        padding-right: 18px;
+
+    }
+
+
+    /*
+        Dashboard becomes slightly more compact.
+    */
+
+    .dashboard {
+
+        padding: 20px 18px 30px;
+
+    }
+
+}
+
+
+/* =========================================================
+   4. TABLET
+   =========================================================
+
+   Around 900px, the sidebar + main content combination
+   starts becoming cramped.
+
+   The main dashboard grid will already stack the map
+   and event panel because of dashboard.css.
+
+   Here we prepare the sidebar for smaller screens.
+*/
+
+@media (max-width: 900px) {
+
+    /*
+        Sidebar becomes slightly narrower.
+    */
+
+    :root {
+
+        --sidebar-width: 190px;
+
+    }
+
+
+    /*
+        Reduce sidebar text size slightly.
+    */
+
+    .brand-text h1 {
+
+        font-size: 16px;
+
+    }
+
+
+    .brand-text span {
+
+        font-size: 7px;
+
+    }
+
+
+    .nav-item {
+
+        font-size: 12px;
+
+        min-height: 42px;
+
+    }
+
+
+    /*
+        Main content naturally adjusts because
+        margin-left uses --sidebar-width.
+    */
+
+    .main-content {
+
+        width: calc(100% - var(--sidebar-width));
+
+    }
+
+}
+
+
+/* =========================================================
+   5. MOBILE BREAKPOINT
+   =========================================================
+
+   This is the BIG change.
+
+   On a phone we don't want the sidebar permanently
+   occupying almost half the screen.
+
+   Therefore:
+
+       Desktop:
+       Sidebar always visible
+
+       Mobile:
+       Sidebar becomes a hidden drawer
+*/
+
+
+@media (max-width: 700px) {
+
+    /* -----------------------------------------------------
+       SIDEBAR
+       ----------------------------------------------------- */
+
+    .sidebar {
+
+        /*
+            Move the sidebar outside the screen.
+
+            It will eventually slide back into view when
+            the user clicks the mobile menu button.
+        */
+
+        transform: translateX(-100%);
+
+        /*
+            Keep the sidebar full size when opened.
+        */
+
+        width: 240px;
+
+        /*
+            Smooth slide animation.
+        */
+
+        transition:
+            transform 0.25s ease,
+            background-color var(--transition-normal);
+
+    }
+
+
+    /*
+        JavaScript will eventually add this class when the
+        user presses the mobile menu button.
+
+        Example:
+
+        sidebar.classList.add("mobile-open");
+    */
+
+    .sidebar.mobile-open {
+
+        transform: translateX(0);
+
+    }
+
+
+    /* -----------------------------------------------------
+       MAIN CONTENT
+       -----------------------------------------------------
+
+       Since the sidebar is hidden on mobile, the main
+       content can use the entire screen.
+    */
+
+    .main-content {
+
+        margin-left: 0;
+
+        width: 100%;
+
+    }
+
+
+    /* -----------------------------------------------------
+       MOBILE NAVBAR
+       ----------------------------------------------------- */
+
+    .navbar {
+
+        height: 64px;
+
+        padding:
+            0 14px;
+
+    }
+
+
+    /*
+        Mobile menu button becomes visible.
+    */
+
+    .mobile-menu {
+
+        display: flex;
+
+    }
+
+
+    /* -----------------------------------------------------
+       DASHBOARD
+       ----------------------------------------------------- */
+
+    .dashboard {
+
+        padding:
+            18px
+            14px
+            30px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       DASHBOARD HEADING
+       ----------------------------------------------------- */
+
+    .dashboard-heading h2 {
+
+        font-size: 20px;
+
+    }
+
+
+    .dashboard-heading p {
+
+        font-size: 10px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       STATISTICS
+       ----------------------------------------------------- */
+
+    /*
+        cards.css already makes the statistics a single
+        column on smaller screens.
+    */
+
+    .statistics-grid {
+
+        gap: 10px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       MAP + EVENT PANEL
+       ----------------------------------------------------- */
+
+    /*
+        dashboard.css stacks these vertically.
+    */
+
+    .main-dashboard-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 14px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       BOTTOM SECTIONS
+       ----------------------------------------------------- */
+
+    .bottom-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+
+/* =========================================================
+   6. SMALL PHONE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    /* -----------------------------------------------------
+       NAVBAR
+       ----------------------------------------------------- */
+
+    .navbar {
+
+        height: 60px;
+
+        padding:
+            0 12px;
+
+    }
+
+
+    /*
+        Search bar takes priority over less important
+        navbar elements.
+    */
+
+    .navbar-search {
+
+        height: 38px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       DASHBOARD
+       ----------------------------------------------------- */
+
+    .dashboard {
+
+        padding:
+            16px
+            12px
+            25px;
+
+    }
+
+
+    .dashboard-heading {
+
+        margin-bottom: 16px;
+
+    }
+
+
+    .dashboard-heading h2 {
+
+        font-size: 18px;
+
+    }
+
+
+    .dashboard-heading p {
+
+        font-size: 9px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       MAP
+       ----------------------------------------------------- */
+
+    .map {
+
+        height: 350px;
+
+        min-height: 300px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       EVENT PANEL
+       ----------------------------------------------------- */
+
+    .event-panel {
+
+        padding: 15px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       BOTTOM CARDS
+       ----------------------------------------------------- */
+
+    .recent-activity,
+    .activity-chart {
+
+        padding: 14px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       SECTION HEADERS
+       ----------------------------------------------------- */
+
+    .section-header {
+
+        gap: 8px;
+
+    }
+
+
+    .section-header h3 {
+
+        font-size: 13px;
+
+    }
+
+
+    .section-header p {
+
+        font-size: 9px;
+
+    }
+
+}
+
+
+/* =========================================================
+   7. VERY SMALL PHONE
+   =========================================================
+
+   For phones around 360px wide.
+*/
+
+@media (max-width: 380px) {
+
+    /*
+        Hide the "Map / Satellite" switch if there isn't
+        enough room.
+    */
+
+    .map-mode-buttons {
+
+        display: none;
+
+    }
+
+
+    /*
+        Reduce map height slightly.
+    */
+
+    .map {
+
+        height: 320px;
+
+    }
+
+
+    /*
+        Smaller event icon.
+    */
+
+    .event-icon {
+
+        width: 42px;
+
+        height: 42px;
+
+        min-width: 42px;
+
+        font-size: 20px;
+
+    }
+
+
+    /*
+        Smaller primary button.
+    */
+
+    .primary-button {
+
+        min-height: 40px;
+
+    }
+
+}
+
+
+/* =========================================================
+   8. LANDSCAPE PHONES
+   =========================================================
+
+   Phones rotated sideways have a lot of horizontal space
+   but limited vertical space.
+
+   Reduce the map height so the user doesn't have to
+   scroll forever.
+*/
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+    .map {
+
+        height: 360px;
+
+    }
+
+}
+
+
+/* =========================================================
+   9. REDUCED MOTION
+   =========================================================
+
+   Some users prefer less animation.
+
+   This accessibility rule respects that preference.
+*/
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
+
+        scroll-behavior: auto !important;
+
+    }
+
+}
+
+
+/* =========================================================
+   END OF RESPONSIVE STYLES
+   ========================================================= */

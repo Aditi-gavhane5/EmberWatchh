@@ -1,0 +1,657 @@
+/* =========================================================
+   EMBERWATCH - DASHBOARD LAYOUT
+   =========================================================
+
+   This file controls the overall arrangement of the
+   dashboard.
+
+   It does NOT control the detailed appearance of:
+
+   - Sidebar       → sidebar.css
+   - Navbar        → navbar.css
+   - Statistics    → cards.css
+   - Map           → map.css
+   - Event panel   → eventpanel.css
+   - Table         → tables.css
+
+   Instead, this file decides WHERE those sections sit
+   on the page.
+*/
+
+
+/* =========================================================
+   1. MAIN CONTENT
+   =========================================================
+
+   The sidebar is fixed on the left.
+
+   Therefore, the main content needs to leave enough space
+   for the sidebar.
+*/
+
+.main-content {
+
+    /*
+        Leave space for the fixed sidebar.
+
+        var(--sidebar-width) currently equals 230px.
+    */
+
+    margin-left: var(--sidebar-width);
+
+    /*
+        The main content occupies everything to the right
+        of the sidebar.
+    */
+
+    min-height: 100vh;
+
+    width: calc(100% - var(--sidebar-width));
+
+    /*
+        Prevent accidental horizontal scrolling.
+    */
+
+    overflow-x: hidden;
+
+    /*
+        Smooth theme transition.
+    */
+
+    transition:
+        background-color var(--transition-normal);
+}
+
+
+/* =========================================================
+   2. DASHBOARD CONTAINER
+   =========================================================
+
+   This is the main content inside the page.
+
+   We give it comfortable spacing so the dashboard doesn't
+   touch the edges of the screen.
+*/
+
+.dashboard {
+
+    width: 100%;
+
+    padding:
+        28px
+        var(--content-padding)
+        40px;
+
+}
+
+
+/* =========================================================
+   3. DASHBOARD HEADING
+   ========================================================= */
+
+.dashboard-heading {
+
+    /*
+        Heading section sits above the statistics.
+    */
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    /*
+        Space below the heading before statistics begin.
+    */
+
+    margin-bottom: 22px;
+}
+
+
+/* Main page title */
+
+.dashboard-heading h2 {
+
+    font-size: 24px;
+
+    font-weight: 650;
+
+    letter-spacing: -0.02em;
+
+    color: var(--text-primary);
+}
+
+
+/* Supporting description */
+
+.dashboard-heading p {
+
+    margin-top: 6px;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   4. SPACE BETWEEN STATISTICS AND MAIN DASHBOARD
+   =========================================================
+
+   The statistics grid itself is defined in cards.css.
+
+   Here we simply control how much space comes after it.
+*/
+
+.statistics-grid {
+
+    margin-bottom: 18px;
+}
+
+
+/* =========================================================
+   5. MAIN DASHBOARD GRID
+   =========================================================
+
+   This is the most important layout section.
+
+   It contains:
+
+   LEFT:
+       Interactive map
+
+   RIGHT:
+       Selected event information
+*/
+
+.main-dashboard-grid {
+
+    display: grid;
+
+    /*
+        The map gets more space than the information panel.
+
+        1.8fr = map
+        1fr   = event panel
+    */
+
+    grid-template-columns: minmax(0, 1.8fr) minmax(280px, 1fr);
+
+    gap: 18px;
+
+    /*
+        Both sections should stretch to the same height.
+    */
+
+    align-items: stretch;
+
+    /*
+        Space before the bottom sections.
+    */
+
+    margin-bottom: 18px;
+}
+
+
+/* =========================================================
+   6. COMMON SECTION HEADER
+   =========================================================
+
+   Several dashboard sections use the same header structure.
+
+   Example:
+
+   Global Event Map                  [Map] [Satellite]
+
+   Recent Activity                   View all →
+*/
+
+.section-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    /*
+        Padding is intentionally kept separate from the
+        map/card itself.
+    */
+
+    margin-bottom: 13px;
+}
+
+
+/* Section title */
+
+.section-header h3 {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: var(--text-primary);
+}
+
+
+/* Section subtitle */
+
+.section-header p {
+
+    margin-top: 4px;
+
+    font-size: 10px;
+
+    color: var(--text-muted);
+}
+
+
+/* =========================================================
+   7. MAP CONTAINER
+   =========================================================
+
+   The actual map styling will be handled by map.css.
+
+   Here we only establish the outer layout.
+*/
+
+.map-container {
+
+    /*
+        Prevent the map from becoming wider than its grid
+        column.
+    */
+
+    min-width: 0;
+
+    /*
+        This is important because the map and its header
+        belong together.
+    */
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+/* =========================================================
+   8. BOTTOM GRID
+   =========================================================
+
+   The bottom area contains:
+
+   LEFT:
+       Recent Activity
+
+   RIGHT:
+       Events Trend
+*/
+
+.bottom-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.4fr)
+        minmax(280px, 1fr);
+
+    gap: 18px;
+
+    align-items: stretch;
+}
+
+
+/* =========================================================
+   9. RECENT ACTIVITY SECTION
+   ========================================================= */
+
+.recent-activity {
+
+    min-width: 0;
+
+    background-color: var(--bg-card);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-medium);
+
+    padding: 18px;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   10. ACTIVITY CHART SECTION
+   ========================================================= */
+
+.activity-chart {
+
+    min-width: 0;
+
+    background-color: var(--bg-card);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-medium);
+
+    padding: 18px;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   11. TEXT BUTTON
+   =========================================================
+
+   Used for:
+
+       View all →
+*/
+
+.text-button {
+
+    color: var(--orange);
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition:
+        color var(--transition-fast);
+}
+
+
+.text-button:hover {
+
+    color: var(--orange-light);
+
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   12. CHART SELECT
+   =========================================================
+
+   This is the small "Last 7 days" dropdown.
+*/
+
+.activity-chart select {
+
+    padding: 6px 9px;
+
+    background-color: var(--bg-secondary);
+
+    color: var(--text-secondary);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-small);
+
+    font-size: 9px;
+
+    cursor: pointer;
+}
+
+
+.activity-chart select:hover {
+
+    border-color: var(--border-light);
+}
+
+
+/* =========================================================
+   13. CHART PLACEHOLDER
+   =========================================================
+
+   This is temporary.
+
+   Later dashboard.js will create the actual chart.
+*/
+
+.chart-container {
+
+    width: 100%;
+
+    height: 190px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+
+.chart-placeholder {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    color: var(--text-muted);
+
+    font-size: 10px;
+
+    text-align: center;
+}
+
+
+.chart-placeholder:first-letter {
+
+    font-size: 30px;
+}
+
+
+/* =========================================================
+   14. DESKTOP LARGE SCREENS
+   =========================================================
+
+   On very large monitors, we don't want the content to
+   become ridiculously stretched.
+
+   The dashboard still remains fluid, but spacing is
+   controlled.
+*/
+
+@media (min-width: 1500px) {
+
+    .dashboard {
+
+        padding-left: 34px;
+        padding-right: 34px;
+
+    }
+
+    .main-dashboard-grid {
+
+        grid-template-columns:
+            minmax(0, 1.9fr)
+            minmax(320px, 1fr);
+
+    }
+}
+
+
+/* =========================================================
+   15. MEDIUM LAPTOPS
+   =========================================================
+
+   At this point, the right-side event panel needs a little
+   more breathing room.
+*/
+
+@media (max-width: 1200px) {
+
+    .main-dashboard-grid {
+
+        grid-template-columns:
+            minmax(0, 1.5fr)
+            minmax(260px, 1fr);
+
+    }
+
+
+    .bottom-grid {
+
+        grid-template-columns:
+            minmax(0, 1.2fr)
+            minmax(260px, 1fr);
+
+    }
+
+}
+
+
+/* =========================================================
+   16. TABLET LAYOUT
+   =========================================================
+
+   When the screen becomes too narrow to comfortably keep
+   map + event panel side-by-side, we stack them.
+
+   This is much better than squeezing everything together.
+*/
+
+@media (max-width: 900px) {
+
+    .dashboard {
+
+        padding:
+            22px
+            20px
+            35px;
+
+    }
+
+
+    .main-dashboard-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .bottom-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+
+/* =========================================================
+   17. SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .dashboard {
+
+        padding:
+            18px
+            14px
+            30px;
+
+    }
+
+
+    .dashboard-heading {
+
+        margin-bottom: 18px;
+
+    }
+
+
+    .dashboard-heading h2 {
+
+        font-size: 20px;
+
+    }
+
+
+    .dashboard-heading p {
+
+        font-size: 11px;
+
+    }
+
+
+    .main-dashboard-grid {
+
+        gap: 14px;
+
+        margin-bottom: 14px;
+
+    }
+
+
+    .bottom-grid {
+
+        gap: 14px;
+
+    }
+
+
+    .recent-activity,
+    .activity-chart {
+
+        padding: 14px;
+
+    }
+
+}
+
+
+/* =========================================================
+   18. VERY SMALL SCREENS
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+    .dashboard-heading h2 {
+
+        font-size: 18px;
+
+    }
+
+
+    .section-header h3 {
+
+        font-size: 13px;
+
+    }
+
+
+    .section-header p {
+
+        font-size: 9px;
+
+    }
+
+}
+
+
+/* =========================================================
+   END OF DASHBOARD STYLES
+   ========================================================= */

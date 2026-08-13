@@ -1,0 +1,438 @@
+/* =========================================================
+   EMBERWATCH - STATISTICS CARDS
+   =========================================================
+
+   This file controls the small information cards shown
+   near the top of the dashboard.
+
+   Current cards:
+
+   1. Total Events
+   2. Affected Regions
+   3. High Alerts
+   4. Last Updated
+
+   The HTML for these cards is already inside index.html.
+
+   This file only controls how they LOOK.
+*/
+
+
+/* =========================================================
+   1. STATISTICS GRID
+   =========================================================
+
+   The four cards are arranged in one row on desktop.
+
+   CSS Grid is useful here because we have a collection of
+   equal-sized items that should automatically align.
+*/
+
+.statistics-grid {
+
+    display: grid;
+
+    /*
+        Four equal columns.
+
+        1fr means:
+        "Give this column one equal share of the space."
+    */
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 14px;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   2. INDIVIDUAL STAT CARD
+   ========================================================= */
+
+.stat-card {
+
+    /*
+        Each card contains:
+
+        ICON → information → value → description
+    */
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    /*
+        Internal spacing.
+    */
+
+    padding: 18px;
+
+    /*
+        Dark panel from our design system.
+    */
+
+    background-color: var(--bg-card);
+
+    /*
+        Very subtle border.
+    */
+
+    border: 1px solid var(--border-color);
+
+    /*
+        Controlled rounding.
+
+        We don't want giant pill-shaped cards.
+    */
+
+    border-radius: var(--radius-medium);
+
+    /*
+        Cards should occupy the available grid space.
+    */
+
+    min-width: 0;
+
+    /*
+        Smooth hover effect.
+    */
+
+    transition:
+        background-color var(--transition-fast),
+        border-color var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+
+/* =========================================================
+   3. CARD HOVER
+   ========================================================= */
+
+.stat-card:hover {
+
+    background-color: var(--bg-card-hover);
+
+    border-color: var(--border-light);
+
+    /*
+        Tiny vertical movement.
+
+        This is deliberately subtle.
+    */
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   4. STATISTIC ICON
+   =========================================================
+
+   Each statistic has a small icon container.
+
+   Example:
+
+   🌐
+   🔥
+   ⚠️
+   ◷
+*/
+
+.stat-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    min-width: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: var(--radius-medium);
+
+    font-size: 19px;
+
+    /*
+        The icon background is intentionally subtle.
+    */
+
+    border: 1px solid var(--border-color);
+}
+
+
+/* =========================================================
+   5. INDIVIDUAL ICON COLORS
+   =========================================================
+
+   The HTML gives each icon a class:
+
+   .fire
+   .region
+   .alert
+   .time
+
+   This allows us to give them slightly different visual
+   identities without changing the entire card.
+*/
+
+
+/* Total Events */
+
+.stat-icon.fire {
+
+    color: var(--fire);
+
+    background-color:
+        rgba(255, 75, 31, 0.08);
+
+    border-color:
+        rgba(255, 75, 31, 0.15);
+}
+
+
+/* Affected Regions */
+
+.stat-icon.region {
+
+    color: var(--flood);
+
+    background-color:
+        rgba(33, 150, 243, 0.08);
+
+    border-color:
+        rgba(33, 150, 243, 0.15);
+}
+
+
+/* High Alerts */
+
+.stat-icon.alert {
+
+    color: var(--severity-high);
+
+    background-color:
+        rgba(239, 68, 68, 0.08);
+
+    border-color:
+        rgba(239, 68, 68, 0.15);
+}
+
+
+/* Last Updated */
+
+.stat-icon.time {
+
+    color: var(--orange);
+
+    background-color:
+        rgba(255, 90, 10, 0.08);
+
+    border-color:
+        rgba(255, 90, 10, 0.15);
+}
+
+
+/* =========================================================
+   6. STAT CONTENT
+   ========================================================= */
+
+.stat-content {
+
+    /*
+        Allow text to shrink if the screen becomes smaller.
+    */
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+/* =========================================================
+   7. STAT LABEL
+   =========================================================
+
+   Examples:
+
+   Total Events
+   Affected Regions
+   High Alerts
+*/
+
+.stat-content > span {
+
+    color: var(--text-muted);
+
+    font-size: 10px;
+
+    font-weight: 500;
+
+    /*
+        Slightly increased letter spacing makes small labels
+        easier to read.
+    */
+
+    letter-spacing: 0.03em;
+}
+
+
+/* =========================================================
+   8. MAIN STATISTIC VALUE
+   =========================================================
+
+   Examples:
+
+   247
+   31
+   18
+   2 min ago
+*/
+
+.stat-content > strong {
+
+    color: var(--text-primary);
+
+    font-size: 20px;
+
+    font-weight: 650;
+
+    line-height: 1.15;
+
+    /*
+        Prevent very long values from breaking the layout.
+    */
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   9. STAT DESCRIPTION
+   =========================================================
+
+   Examples:
+
+   ↑ 12% from yesterday
+   Real-time data
+*/
+
+.stat-content > small {
+
+    color: var(--text-muted);
+
+    font-size: 9px;
+
+    line-height: 1.3;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   10. POSITIVE CHANGE
+   =========================================================
+
+   We can use this class later when JavaScript calculates
+   whether the number increased or decreased.
+*/
+
+.stat-change-positive {
+
+    color: var(--success) !important;
+}
+
+
+/* =========================================================
+   11. NEGATIVE CHANGE
+   ========================================================= */
+
+.stat-change-negative {
+
+    color: var(--danger) !important;
+}
+
+
+/* =========================================================
+   12. LIGHT MODE
+   =========================================================
+
+   Most of the light-mode appearance already comes from
+   variables.css.
+
+   We only make the cards slightly more defined.
+*/
+
+body.light-mode .stat-card {
+
+    box-shadow:
+        var(--shadow-small);
+}
+
+
+/* =========================================================
+   13. RESPONSIVE STATISTICS
+   =========================================================
+
+   Four cards won't fit comfortably on smaller screens,
+   so we gradually reduce the number of columns.
+*/
+
+
+/* Tablet */
+
+@media (max-width: 1100px) {
+
+    .statistics-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .statistics-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .stat-card {
+
+        padding: 16px;
+    }
+
+
+    .stat-content > strong {
+
+        font-size: 18px;
+    }
+}
+
+
+/* =========================================================
+   END OF STATISTICS CARD STYLES
+   ========================================================= */
